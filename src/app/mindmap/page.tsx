@@ -23,6 +23,7 @@ export default function Home() {
   const [TaskId, setTaskId] = useState('');
   const [mode, setMode] = useState<'youtube' | 'longtext'>('youtube');
   const [showPricing, setShowPricing] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!isMounted) return;
@@ -161,6 +162,8 @@ export default function Home() {
           body: JSON.stringify({ taskId, email: session?.user?.email }),
         });
         console.log("Webhook submitted successfully.");
+        // Add 15-second delay before checking task status
+        await new Promise(resolve => setTimeout(resolve, 15000));
         await checkTaskStatus(taskId);
       } else {
         console.error("Failed to submit webhook:", await response.text());
@@ -193,15 +196,20 @@ export default function Home() {
         const res = await fetch(`/api/webhook?taskId=${taskId}`);
         const data = await res.json();
         setCurrentStep(data.status);
+        console.log(data);
         if (data.task.status == 'complete') {
           clearInterval(messageInterval);
-          setLoading(false)
+          setLoading(false);
+          setError(null);
           console.log("Task completed");
           await new Promise(resolve => setTimeout(resolve, 2000));
           fetchHtmlContent(taskId);
-          setTaskId(taskId)
-      await fetch('/api/webhook', { method: 'POST' });
-      return data.data;
+          setTaskId(taskId);
+          return data.data;
+        } else if(!data.task.isTranscribe){
+          clearInterval(messageInterval);
+          setLoading(false);
+          setError("No subtitles in the provided YouTube link");
         }
         await new Promise(resolve => setTimeout(resolve, interval));
         attempts++;
@@ -285,6 +293,7 @@ export default function Home() {
               <Button variant="outline" onClick={handleSubmitWebhook} disabled={loading}>
                 {loading ? <Loader2 className="animate-spin w-4 h-4" /> : "Test Webhook"}
               </Button>
+              {error? <p className="text-red-600">{error}</p> : null}
             </>
           )}
           {loading && (
@@ -324,6 +333,15 @@ export default function Home() {
               {saving ? <Loader2 className="animate-spin w-4 h-4" /> : 'Save Changes'}
             </Button>
             <Button variant="outline" onClick={enterFullscreen}>Go Fullscreen</Button>
+            <Button variant="outline" onClick={() => {
+              if (editorRef.current) {
+                const currentContent = editorRef.current.state.doc.toString();
+                const fixedContent = currentContent.replace(/\\n/g, '');
+                editorRef.current.dispatch({
+                  changes: { from: 0, to: editorRef.current.state.doc.length, insert: fixedContent }
+                });
+              }
+            }}>Fix Syntax</Button>
           </div>
         </div>
       </div>
