@@ -1,15 +1,15 @@
 ---
 title: "AI-Powered Mind Mapping for Email Organization"
 description: "Enter mind mapping—a visual technique that helps organize thoughts and information around a central topic."
-image: "https://eobemzviqxxlcrwuygkr.supabase.co/storage/v1/object/public/sparklog//gratitude-journal-hero.webp"
+image: "https://lzdxgskizluoordbdgvk.supabase.co/storage/v1/object/public/blog-images//ChatGPT%20Image%20Apr%204,%202025,%2003_19_05%20PM.png"
 openGraph:
   title: "AI-Powered Mind Mapping for Email Organization"
   description: "Enter mind mapping—a visual technique that helps organize thoughts and information around a central topic."
   images:
-    - url: "https://eobemzviqxxlcrwuygkr.supabase.co/storage/v1/object/public/sparklog//gratitude-journal-hero.webp"
+    - url: "https://lzdxgskizluoordbdgvk.supabase.co/storage/v1/object/public/blog-images//ChatGPT%20Image%20Apr%204,%202025,%2003_19_05%20PM.png"
       width: 1200
       height: 630
-      alt: "Hero Image: A person writing in a gratitude journal in a serene, nature-filled setting."
+      alt: "Hero Image: Ai for email organization"
 ---
 
 

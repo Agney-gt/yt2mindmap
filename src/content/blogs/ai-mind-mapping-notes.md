@@ -1,15 +1,15 @@
 ---
-title: "AI-Powered Mind Mapping for Email Organization"
-description: "Enter mind mapping—a visual technique that helps organize thoughts and information around a central topic."
-image: "https://eobemzviqxxlcrwuygkr.supabase.co/storage/v1/object/public/sparklog//gratitude-journal-hero.webp"
+title: " Automating Note-Taking with AI Mind Maps"
+description: "Discover how AI-powered mind mapping revolutionizes note-taking by transforming raw information into organized, interactive visual structures for enhanced comprehension and recall."
+image: "https://lzdxgskizluoordbdgvk.supabase.co/storage/v1/object/public/blog-images//automte-note-taking.png"
 openGraph:
-  title: "AI-Powered Mind Mapping for Email Organization"
-  description: "Enter mind mapping—a visual technique that helps organize thoughts and information around a central topic."
+  title: " Automating Note-Taking with AI Mind Maps"
+  description: "Discover how AI-powered mind mapping revolutionizes note-taking by transforming raw information into organized, interactive visual structures for enhanced comprehension and recall."
   images:
-    - url: "https://eobemzviqxxlcrwuygkr.supabase.co/storage/v1/object/public/sparklog//gratitude-journal-hero.webp"
+    - url: "https://lzdxgskizluoordbdgvk.supabase.co/storage/v1/object/public/blog-images//automte-note-taking.png"
       width: 1200
       height: 630
-      alt: "Hero Image: A person writing in a gratitude journal in a serene, nature-filled setting."
+      alt: "Hero Image: Ai note taking"
 ---
 
 
