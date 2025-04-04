@@ -19,6 +19,7 @@ interface TaskData {
   data: WebhookData;
   createdAt: string;
   updatedAt: string;
+  isTranscribe: boolean;
 }
 
 export async function POST(request: Request): Promise<NextResponse> {
@@ -69,6 +70,7 @@ export async function POST(request: Request): Promise<NextResponse> {
       data: body as WebhookData,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
+      isTranscribe: false,
     };
 
     // Store the task in Redis
