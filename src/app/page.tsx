@@ -1,5 +1,5 @@
 'use client'
-import { Brain, PlayCircle, Zap, BookOpen, Network, Edit3, Save, RefreshCw, Star, Users, Clock, CheckCircle2 } from "lucide-react"
+import { Brain, PlayCircle, Zap, Network, Edit3, Save, RefreshCw, Star, Users, Clock, CheckCircle2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { useRouter } from "next/navigation";

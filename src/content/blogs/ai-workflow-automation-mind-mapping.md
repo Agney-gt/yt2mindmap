@@ -1,12 +1,12 @@
 ---
 title: "AI Workflow Automation in Mind Mapping"
 description: "Discover how AI workflow automation revolutionizes mind mapping by enhancing productivity, optimizing decision-making, and streamlining complex workflows for better outcomes."
-image: "https://lzdxgskizluoordbdgvk.supabase.co/storage/v1/object/public/blog-images//descision-making.png"
+image: "https://lzdxgskizluoordbdgvk.supabase.co/storage/v1/object/public/blog-images//Ai-workflow-automation.png"
 openGraph:
   title: "AI Workflow Automation in Mind Mapping"
   description: "Discover how AI workflow automation revolutionizes mind mapping by enhancing productivity, optimizing decision-making, and streamlining complex workflows for better outcomes."
   images:
-    - url: "https://lzdxgskizluoordbdgvk.supabase.co/storage/v1/object/public/blog-images//descision-making.png"
+    - url: "https://lzdxgskizluoordbdgvk.supabase.co/storage/v1/object/public/blog-images//Ai-workflow-automation.png"
       width: 1200
       height: 630
       alt: "Hero Image: Ai workflow automation in mind mapping"
