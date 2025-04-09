@@ -157,7 +157,7 @@ export default function PricingPage() {
         <AnimatedSection delay={0.2} className="py-20 px-4 md:px-6 lg:px-8">
           <div className="container mx-auto max-w-6xl">
             <div className="grid md:grid-cols-3 gap-6 lg:gap-8 justify-center">
-              {plans.map((plan, index) => (
+              {plans.map((plan) => (
                 <motion.div
                   key={plan.id}
                   whileHover={{
@@ -168,7 +168,6 @@ export default function PricingPage() {
                   className="w-full"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 + 0.3 }}
                 >
                   <Card
                     className={`h-full flex flex-col relative overflow-hidden ${
@@ -283,7 +282,7 @@ export default function PricingPage() {
                                 />
                                 <span className="text-sm text-muted-foreground">
                                   By checking this box, you acknowledge and agree to our Refund Policy. You understand
-                                  that PayPal's buyer protection policies may still apply.
+                                  that PayPals buyer protection policies may still apply.
                                 </span>
                               </label>
                               {isAgreed && (
