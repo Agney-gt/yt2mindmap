@@ -55,13 +55,9 @@ export default function Home() {
     } else {
       fetchHtmlContent();
     }
-    if (typeof window !== "undefined") {
-      const storedToken = sessionStorage.getItem("turnstile_verified");
-      if (storedToken) {
-        setIsVerified(true);
-      }
-    }
   }, []);
+
+ 
 
   const handleSave = async () => {
     if (!session?.user?.email) {

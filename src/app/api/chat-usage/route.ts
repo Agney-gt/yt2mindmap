@@ -17,7 +17,7 @@ export async function GET() {
 
     const { data, error } = await supabase
       .from('mindmap_usage')
-      .select('usage_count')
+      .select('usage_count, isSubscribed')
       .eq('user_id', session.user.email)
       .single();
 
@@ -31,12 +31,12 @@ export async function GET() {
           .single();
 
         if (insertError) throw insertError;
-        return NextResponse.json({ usage_count: newUsage.usage_count });
+        return NextResponse.json({ usage_count: newUsage.usage_count, isSubscribed: false });
       }
       throw error;
     }
 
-    return NextResponse.json({ usage_count: data.usage_count });
+    return NextResponse.json({ usage_count: data.usage_count, isSubscribed: data.isSubscribed });
   } catch (error) {
     console.error('Error fetching chat usage:', error);
     return NextResponse.json({ error: 'Failed to fetch chat usage' }, { status: 500 });
@@ -54,7 +54,7 @@ export async function POST() {
     // First get the current usage count
     const { data: currentData, error: fetchError } = await supabase
       .from('mindmap_usage')
-      .select('usage_count')
+      .select('usage_count, isSubscribed')
       .eq('user_id', session.user.email)
       .single();
 
@@ -73,7 +73,7 @@ export async function POST() {
 
     if (error) throw error;
 
-    return NextResponse.json({ usage_count: data.usage_count });
+    return NextResponse.json({ usage_count: data.usage_count, isSubscribed: currentData.isSubscribed });
   } catch (error) {
     console.error('Error updating chat usage:', error);
     return NextResponse.json({ error: 'Failed to update chat usage' }, { status: 500 });

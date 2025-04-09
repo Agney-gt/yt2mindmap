@@ -21,7 +21,7 @@ export default function Home() {
   const [isMounted, setIsMounted] = useState(false);
   const [saving, setSaving] = useState(false);
   const [TaskId, setTaskId] = useState('');
-  const [mode, setMode] = useState<'youtube' | 'longtext'>('youtube');
+  const [mode, setMode] = useState<'youtube' | 'longtext' | 'research'>('youtube');
   const [showPricing, setShowPricing] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -56,13 +56,9 @@ export default function Home() {
     if (mindmapId) {
       loadSavedMindmap(mindmapId);
     }
-    if (typeof window !== "undefined") {
-      const storedToken = sessionStorage.getItem("turnstile_verified");
-      if (storedToken) {
-        setIsVerified(true);
-      }
-    }
   }, []);
+
+
 
   const handleSave = async () => {
     if (!session?.user?.email) {
@@ -163,7 +159,7 @@ export default function Home() {
         });
         console.log("Webhook submitted successfully.");
         // Add 15-second delay before checking task status
-        await new Promise(resolve => setTimeout(resolve, 15000));
+        await new Promise(resolve => setTimeout(resolve, 20000));
         await checkTaskStatus(taskId);
       } else {
         console.error("Failed to submit webhook:", await response.text());
@@ -256,6 +252,12 @@ export default function Home() {
               >
                 Long Text
               </Button>
+              <Button
+                variant={mode === 'research' ? 'default' : 'outline'}
+                onClick={() => setMode('research')}
+              >
+                Research
+              </Button>
             </div>
           </div>
           {!isVerified ? (
@@ -269,11 +271,12 @@ export default function Home() {
                         method: "GET",
                       });
                       const data = await response.json();
-                      if (data.usage_count > 3) {
+                      if (data.usage_count > 3 && !data.isSubscribed) {
                         setShowPricing(true);
                       } else {
                         setIsVerified(true);
                       }
+                     
                     } catch (error) {
                       console.error("Error updating usage count:", error);
                       setIsVerified(true);
@@ -284,12 +287,23 @@ export default function Home() {
             </div>
           ) : (
             <>
-              <Input
-                placeholder="Enter Youtube Link"
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-                className="pl-2 pr-2 w-1/2 justify-center mb-6"
-              />
+              {mode === 'research' ? (
+                <iframe
+                  allow="clipboard-read; clipboard-write"
+                  src="https://www.taskade.com/a/01JR7MD4P095GY90F24NF6AFDX"
+                  width="600"
+                  height="400"
+                
+                  allowFullScreen
+                />
+              ) : (
+                <Input
+                  placeholder="Mindmap content"
+                  value={inputValue}
+                  onChange={(e) => setInputValue(e.target.value)}
+                  className="pl-2 pr-2 w-1/2 justify-center mb-6"
+                />
+              )}
               <Button variant="outline" onClick={handleSubmitWebhook} disabled={loading}>
                 {loading ? <Loader2 className="animate-spin w-4 h-4" /> : "Test Webhook"}
               </Button>
