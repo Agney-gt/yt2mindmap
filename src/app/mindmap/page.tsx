@@ -158,8 +158,7 @@ export default function Home() {
           body: JSON.stringify({ taskId, email: session?.user?.email }),
         });
         console.log("Webhook submitted successfully.");
-        // Add 15-second delay before checking task status
-        await new Promise(resolve => setTimeout(resolve, 20000));
+        await new Promise(resolve => setTimeout(resolve, 25000));
         await checkTaskStatus(taskId);
       } else {
         console.error("Failed to submit webhook:", await response.text());

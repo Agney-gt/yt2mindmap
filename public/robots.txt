@@ -1,0 +1,12 @@
+# *
+User-agent: *
+Allow: /
+Disallow: /api
+Disallow: /mindmap
+
+# Host
+Host: https://yt2mindmap.com
+
+# Sitemaps
+Sitemap: https://yt2mindmap.com/sitemap.xml
+Sitemap: https://yt2mindmap.com/server-sitemap.xml
