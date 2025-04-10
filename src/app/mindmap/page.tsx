@@ -21,7 +21,7 @@ export default function Home() {
   const [isMounted, setIsMounted] = useState(false);
   const [saving, setSaving] = useState(false);
   const [TaskId, setTaskId] = useState('');
-  const [mode, setMode] = useState<'youtube' | 'longtext'>('youtube');
+  const [mode, setMode] = useState<'youtube' | 'longtext' | 'research'>('youtube');
   const [showPricing, setShowPricing] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -56,13 +56,9 @@ export default function Home() {
     if (mindmapId) {
       loadSavedMindmap(mindmapId);
     }
-    if (typeof window !== "undefined") {
-      const storedToken = sessionStorage.getItem("turnstile_verified");
-      if (storedToken) {
-        setIsVerified(true);
-      }
-    }
   }, []);
+
+
 
   const handleSave = async () => {
     if (!session?.user?.email) {
@@ -142,14 +138,37 @@ export default function Home() {
 
   const handleSubmitWebhook = async () => {
     setLoading(true);
+    setError(null);
     try {
+      // Extract video ID from URL
+      const videoId = inputValue.split('v=')[1]?.split('&')[0];
+      if (!videoId) {
+        setError('Invalid YouTube URL');
+        setLoading(false);
+        return;
+      }
+
+      // Check for subtitles first
+      const subtitleCheckResponse = await fetch('/api/check-subtitles', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ videoId }),
+      });
+
+      const subtitleData = await subtitleCheckResponse.json();
+      if (!subtitleData.hasSubtitles) {
+        setError('This video does not have subtitles available');
+        setLoading(false);
+        return;
+      }
+
       const taskId = Math.random().toString(36).substring(2);
       const response = await fetch('/api/yt-transcript-webhook-old', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ url: inputValue, taskId }),
       });
-      console.log("sent to taskade")
+      
       if (response.ok) {
         // Increment chat usage count
         await fetch('/api/chat-usage', {
@@ -162,14 +181,14 @@ export default function Home() {
           body: JSON.stringify({ taskId, email: session?.user?.email }),
         });
         console.log("Webhook submitted successfully.");
-        // Add 15-second delay before checking task status
-        await new Promise(resolve => setTimeout(resolve, 15000));
         await checkTaskStatus(taskId);
       } else {
         console.error("Failed to submit webhook:", await response.text());
+        setError('Failed to process video');
       }
     } catch (error) {
       console.error("Error submitting webhook:", error);
+      setError('An error occurred while processing the video');
     } finally {
       setLoading(false);
     }
@@ -206,11 +225,7 @@ export default function Home() {
           fetchHtmlContent(taskId);
           setTaskId(taskId);
           return data.data;
-        } else if(!data.task.isTranscribe){
-          clearInterval(messageInterval);
-          setLoading(false);
-          setError("No subtitles in the provided YouTube link");
-        }
+        } 
         await new Promise(resolve => setTimeout(resolve, interval));
         attempts++;
       } catch (error) {
@@ -256,6 +271,12 @@ export default function Home() {
               >
                 Long Text
               </Button>
+              <Button
+                variant={mode === 'research' ? 'default' : 'outline'}
+                onClick={() => setMode('research')}
+              >
+                Research
+              </Button>
             </div>
           </div>
           {!isVerified ? (
@@ -269,11 +290,12 @@ export default function Home() {
                         method: "GET",
                       });
                       const data = await response.json();
-                      if (data.usage_count > 3) {
+                      if (data.usage_count > 3 && !data.isSubscribed && !data.isPaid) {
                         setShowPricing(true);
                       } else {
                         setIsVerified(true);
                       }
+                     
                     } catch (error) {
                       console.error("Error updating usage count:", error);
                       setIsVerified(true);
@@ -284,12 +306,23 @@ export default function Home() {
             </div>
           ) : (
             <>
-              <Input
-                placeholder="Enter Youtube Link"
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-                className="pl-2 pr-2 w-1/2 justify-center mb-6"
-              />
+              {mode === 'research' ? (
+                <iframe
+                  allow="clipboard-read; clipboard-write"
+                  src="https://www.taskade.com/a/01JR7MD4P095GY90F24NF6AFDX"
+                  width="600"
+                  height="400"
+                
+                  allowFullScreen
+                />
+              ) : (
+                <Input
+                  placeholder="Mindmap content"
+                  value={inputValue}
+                  onChange={(e) => setInputValue(e.target.value)}
+                  className="pl-2 pr-2 w-1/2 justify-center mb-6"
+                />
+              )}
               <Button variant="outline" onClick={handleSubmitWebhook} disabled={loading}>
                 {loading ? <Loader2 className="animate-spin w-4 h-4" /> : "Test Webhook"}
               </Button>

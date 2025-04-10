@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect,useState, useCallback } from 'react';
+import { useEffect, useCallback } from 'react';
 
 interface TurnstileProps {
   onVerify: (token: string) => void;
@@ -20,16 +20,6 @@ declare global {
 }
 
 export default function Turnstile({ onVerify }: TurnstileProps) {
-  const [isVerified, setIsVerified] = useState(false);
-
-  useEffect(() => {
-    const storedVerification = sessionStorage.getItem('turnstile_verified');
-    if (storedVerification) {
-      // Skip onVerify callback for stored tokens to prevent usage count increment
-      setIsVerified(true);
-      return;
-    }
-  }, []);
 
   const onLoad = useCallback(() => {
     if (!window.turnstile) {
@@ -87,5 +77,5 @@ export default function Turnstile({ onVerify }: TurnstileProps) {
 
   }, [onLoad]);
 
-  return isVerified ? null : <div id="turnstile-container" className="flex justify-center my-4" />;
+  return <div id="turnstile-container" className="flex justify-center my-4" />;
 }

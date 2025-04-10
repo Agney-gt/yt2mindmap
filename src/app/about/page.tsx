@@ -2,6 +2,7 @@ import { Brain, BookOpen, Lightbulb, Users } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function AboutPage() {
   return (
@@ -202,9 +203,11 @@ export default function AboutPage() {
     {/* Left: Profile Section */}
     <div className="flex-1 text-center md:text-left">
       <div className="w-32 h-32 mx-auto md:mx-0 rounded-full overflow-hidden mb-4">
-        <img 
+        <Image 
           src="https://eobemzviqxxlcrwuygkr.supabase.co/storage/v1/object/public/sparklog//1689921010749.jpg" 
           alt="Agney Nalapat" 
+          width={128}
+          height={128}
           className="w-full h-full object-cover"
         />
       </div>
@@ -219,9 +222,11 @@ export default function AboutPage() {
 
     {/* Right: Banner Image */}
     <div className="flex-85 mt-36">
-      <img 
+      <Image 
         src="https://eobemzviqxxlcrwuygkr.supabase.co/storage/v1/object/public/sparklog//AI%20writes%20the%20code.%20You%20accept%20all.%20But%20can%20you%20still%20think%20sequentially.jpg" 
         alt="Banner" 
+        width={800}
+        height={400}
         className="w-full h-auto rounded-lg shadow-md"
       />
       {/* Buy Now Button */}

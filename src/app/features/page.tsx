@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function FeaturesPage() {
   return (
@@ -369,9 +370,11 @@ export default function FeaturesPage() {
                     </div>
                     <div className="mt-auto flex items-center gap-4">
                       <div className="w-12 h-12 rounded-full overflow-hidden">
-                        <img 
+                        <Image 
                           src={testimonial.image || "/placeholder.svg"} 
                           alt={testimonial.name} 
+                          width={48}
+                          height={48}
                           className="w-full h-full object-cover"
                         />
                       </div>

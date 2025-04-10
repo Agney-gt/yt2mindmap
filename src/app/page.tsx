@@ -7,6 +7,7 @@ import Image from "next/image";
 
 export default function HomePage() {
   const router = useRouter();
+  
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100">
       
@@ -363,99 +364,6 @@ export default function HomePage() {
               </p>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* Pricing Section */}
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">Simple, Transparent Pricing</h2>
-          <p className="text-slate-600 text-center max-w-2xl mx-auto mb-16">
-            Choose the plan that best fits your learning journey
-          </p>
-
-          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            <Card className="border-2 hover:border-purple-200 transition-all duration-200">
-              <CardContent className="p-6">
-                <h3 className="text-xl font-bold mb-2">Free</h3>
-                <div className="text-3xl font-bold mb-6">$0<span className="text-slate-400 text-lg font-normal">/month</span></div>
-                <ul className="space-y-4 mb-8">
-                  <li className="flex items-center gap-2">
-                    <CheckCircle2 className="w-5 h-5 text-green-500" />
-                    <span>5 mind maps per month</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle2 className="w-5 h-5 text-green-500" />
-                    <span>Basic AI processing</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle2 className="w-5 h-5 text-green-500" />
-                    <span>Export as PNG</span>
-                  </li>
-                </ul>
-                <Button className="w-full" variant="outline">Get Started</Button>
-              </CardContent>
-            </Card>
-
-            <Card className="border-2 border-purple-200 relative hover:border-purple-300 transition-all duration-200">
-              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                <span className="bg-purple-600 text-white px-4 py-1 rounded-full text-sm">Most Popular</span>
-              </div>
-              <CardContent className="p-6">
-                <h3 className="text-xl font-bold mb-2">Pro</h3>
-                <div className="text-3xl font-bold mb-6">$9.99<span className="text-slate-400 text-lg font-normal">/month</span></div>
-                <ul className="space-y-4 mb-8">
-                  <li className="flex items-center gap-2">
-                    <CheckCircle2 className="w-5 h-5 text-green-500" />
-                    <span>Unlimited mind maps</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle2 className="w-5 h-5 text-green-500" />
-                    <span>Advanced AI processing</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle2 className="w-5 h-5 text-green-500" />
-                    <span>Export in multiple formats</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle2 className="w-5 h-5 text-green-500" />
-                    <span>Priority support</span>
-                  </li>
-                </ul>
-                <Button className="w-full bg-purple-600 hover:bg-purple-700 text-white">Start Free Trial</Button>
-              </CardContent>
-            </Card>
-
-            <Card className="border-2 hover:border-purple-200 transition-all duration-200">
-              <CardContent className="p-6">
-                <h3 className="text-xl font-bold mb-2">Team</h3>
-                <div className="text-3xl font-bold mb-6">$29.99<span className="text-slate-400 text-lg font-normal">/month</span></div>
-                <ul className="space-y-4 mb-8">
-                  <li className="flex items-center gap-2">
-                    <CheckCircle2 className="w-5 h-5 text-green-500" />
-                    <span>Everything in Pro</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle2 className="w-5 h-5 text-green-500" />
-                    <span>5 team members</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle2 className="w-5 h-5 text-green-500" />
-                    <span>Team collaboration</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle2 className="w-5 h-5 text-green-500" />
-                    <span>Analytics dashboard</span>
-                  </li>
-                </ul>
-                <Button className="w-full" variant="outline">Contact Sales</Button>
-              </CardContent>
-            </Card>
-          </div>
-
-          <p className="text-center text-sm text-slate-500 mt-8">
-            All plans include a 14-day money-back guarantee. No questions asked.
-          </p>
         </div>
       </section>
 
