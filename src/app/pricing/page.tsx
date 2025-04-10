@@ -46,13 +46,13 @@ export default function PricingPage() {
       popular: true,
       icon: <Sparkles className="h-5 w-5" />,
       features: [
-        "10 Verifications per Day",
+        "Unlimited Verifications",
         "Advanced Content Editor",
-        "Enhanced Thread Creation",
-        "Basic Analytics",
+        "Unlimited Thread Creation",
+        "Advanced Analytics",
         "Priority Support",
-        "Personal Workspace",
-        "Lifetime Access",
+        "Team Collaboration",
+        "Early Access to New Features",
       ],
       buttonText: "Purchase Now - $49",
       buttonVariant: "default" as const,
@@ -365,21 +365,46 @@ export default function PricingPage() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
+              whileHover={{ scale: 1.02 }}
               transition={{ duration: 0.5 }}
-              className="bg-gradient-to-r from-slate-800 to-slate-700 dark:from-slate-800 dark:to-slate-900 rounded-xl p-8 md:p-12 text-white text-center"
+              className="bg-gradient-to-br from-primary via-primary/90 to-primary/80 dark:from-slate-800 dark:via-slate-700 dark:to-slate-900 rounded-2xl p-10 md:p-16 text-white shadow-xl hover:shadow-2xl transform transition-all duration-300 border border-white/10"
             >
-              <h2 className="text-2xl md:text-3xl font-bold mb-4">Ready to get started?</h2>
-              <p className="text-slate-200 mb-8 max-w-2xl mx-auto">
+              <motion.h2
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                className="text-3xl md:text-4xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white to-white/90"
+              >
+                Ready to get started?
+              </motion.h2>
+              <motion.p
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+                className="text-lg text-white/90 mb-10 max-w-2xl mx-auto leading-relaxed"
+              >
                 Join thousands of satisfied users who have already upgraded their experience.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button size="lg" className="bg-white text-slate-900 hover:bg-slate-100">
+              </motion.p>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
+                className="flex flex-col sm:flex-row gap-6 justify-center items-center"
+              >
+                <Button
+                  size="lg"
+                  className="bg-white text-primary hover:bg-white/90 transform hover:scale-105 transition-all duration-300 shadow-md hover:shadow-lg w-full sm:w-auto text-lg font-semibold px-8"
+                >
                   Sign up for free
                 </Button>
-                <Button size="lg" variant="outline" className="text-white border-white hover:bg-white/10">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="bg-white text-primary hover:bg-white/90 transform hover:scale-105 transition-all duration-300 shadow-md hover:shadow-lg w-full sm:w-auto text-lg font-semibold px-8"
+                >
                   Contact sales
                 </Button>
-              </div>
+              </motion.div>
             </motion.div>
           </div>
         </AnimatedSection>
