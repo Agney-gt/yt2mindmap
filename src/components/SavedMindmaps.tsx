@@ -44,7 +44,7 @@ export default function SavedMindmaps() {
   }
 
   return (
-    <div className="w-64 h-screen bg-gray-50 p-6 overflow-y-auto border-r border-gray-200 shadow-sm transition-all duration-300 ease-in-out">
+    <div className="w-60 h-[120vh] bg-gray-50 p-6 overflow-y-auto border-r border-gray-200 shadow-sm transition-all duration-300 ease-in-out">
       <h2 className="text-xl font-semibold mb-6 text-gray-800">Saved Mindmaps</h2>
       {loading ? (
         <div className="flex justify-center items-center h-40">

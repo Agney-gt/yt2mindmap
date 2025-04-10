@@ -29,7 +29,7 @@ export default function Home() {
     if (!isMounted) return;
     if (!editorRef.current) {
       editorRef.current = new EditorView({
-        parent: document.body,
+        parent: document.getElementById("mirror")!,
         doc: htmlContent,
         extensions: [
           basicSetup,
@@ -78,7 +78,7 @@ export default function Home() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          title: `Mindmap - ${new Date().toLocaleString()}`, 
+          title: `Mindmap - ${new Date().toLocaleString()}`,
           youtubeUrl: inputValue,
           htmlContent: currentHtml,
         }),
@@ -101,7 +101,7 @@ export default function Home() {
       const userEmail = session?.user?.email || 'anonymous';
       const response = await fetch(`https://yt2mapapi.blob.core.windows.net/html/user-${userEmail.split('@')[0]}/${taskId}.html`, { cache: 'no-store' });
       const text = await response.text();
-      
+
       setHtmlContent(text);
       if (editorRef.current) {
         editorRef.current.dispatch({
@@ -141,7 +141,8 @@ export default function Home() {
     setError(null);
     try {
       // Extract video ID from URL
-      const videoId = inputValue.split('v=')[1]?.split('&')[0];
+      if(mode == "youtube"){
+        const videoId = inputValue.split('v=')[1]?.split('&')[0];
       if (!videoId) {
         setError('Invalid YouTube URL');
         setLoading(false);
@@ -162,13 +163,14 @@ export default function Home() {
         return;
       }
 
+      }
       const taskId = Math.random().toString(36).substring(2);
       const response = await fetch('/api/yt-transcript-webhook-old', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ url: inputValue, taskId }),
       });
-      
+
       if (response.ok) {
         // Increment chat usage count
         await fetch('/api/chat-usage', {
@@ -225,7 +227,7 @@ export default function Home() {
           fetchHtmlContent(taskId);
           setTaskId(taskId);
           return data.data;
-        } 
+        }
         await new Promise(resolve => setTimeout(resolve, interval));
         attempts++;
       } catch (error) {
@@ -244,141 +246,151 @@ export default function Home() {
     }
   };
   return (
-    <div className="flex h-screen">
-      <PricingPortal isOpen={showPricing} />
-      {session && (
-        <div className="w-64 bg-gray-100 p-4 border-r border-gray-300 overflow-y-auto">
-          <SavedMindmaps />
-        </div>
-      )}
-      <div className="flex-1 flex flex-col items-center pb-[80px]"> {/* Added padding-bottom for footer */}
-        {/* Top section: Input and Controls */}
-        <div className="w-full flex flex-col items-center justify-start pt-8 pb-4">
-          <div className="flex flex-col items-center gap-4">
-            <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl mb-6">
-              Youtube to <span className="text-blue-600">MindMap</span>
-            </h1>
-            <div className="flex gap-2 mb-6">
-              <Button
-                variant={mode === 'youtube' ? 'default' : 'outline'}
-                onClick={() => setMode('youtube')}
-              >
-                YouTube
-              </Button>
-              <Button
-                variant={mode === 'longtext' ? 'default' : 'outline'}
-                onClick={() => setMode('longtext')}
-              >
-                Long Text
-              </Button>
-              <Button
-                variant={mode === 'research' ? 'default' : 'outline'}
-                onClick={() => setMode('research')}
-              >
-                Research
-              </Button>
-            </div>
+    <>
+      <div className="flex h-screen">
+        <PricingPortal isOpen={showPricing} />
+        {session && (
+          <div className="w-70 bg-gray-100 h-[120vh] p-4 border-r border-gray-300 overflow-y-auto">
+            <SavedMindmaps />
           </div>
-          {!isVerified ? (
-            <div className="flex flex-col items-center">
-              <p className="mb-4 text-gray-600">Please complete the verification to continue</p>
-              {(
-                <Turnstile
-                  onVerify={async () => {
-                    try {
-                      const response = await fetch("/api/chat-usage", {
-                        method: "GET",
-                      });
-                      const data = await response.json();
-                      if (data.usage_count > 3 && !data.isSubscribed && !data.isPaid) {
-                        setShowPricing(true);
-                      } else {
+        )}
+        <div className="flex-1 flex flex-col items-center pb-[80px]"> {/* Added padding-bottom for footer */}
+          {/* Top section: Input and Controls */}
+          <div className="w-full flex flex-col items-center justify-start pt-8 pb-4">
+            <div className="flex flex-col items-center gap-4">
+              <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl mb-6">
+                Youtube to <span className="text-blue-600">MindMap</span>
+              </h1>
+              <div className="flex gap-2 mb-6">
+                <Button
+                  variant={mode === 'youtube' ? 'default' : 'outline'}
+                  onClick={() => setMode('youtube')}
+                >
+                  YouTube
+                </Button>
+                <Button
+                  variant={mode === 'longtext' ? 'default' : 'outline'}
+                  onClick={() => setMode('longtext')}
+                >
+                  Long Text
+                </Button>
+                <Button
+                  variant={mode === 'research' ? 'default' : 'outline'}
+                  onClick={() => setMode('research')}
+                >
+                  Research
+                </Button>
+              </div>
+            </div>
+            {!isVerified ? (
+              <div className="flex flex-col items-center">
+                <p className="mb-4 text-gray-600">Please complete the verification to continue</p>
+                {(
+                  <Turnstile
+                    onVerify={async () => {
+                      try {
+                        const response = await fetch("/api/chat-usage", {
+                          method: "GET",
+                        });
+                        const data = await response.json();
+                        if (data.usage_count > 3 && !data.isSubscribed && !data.isPaid) {
+                          setShowPricing(true);
+                        } else {
+                          setIsVerified(true);
+                        }
+
+                      } catch (error) {
+                        console.error("Error updating usage count:", error);
                         setIsVerified(true);
                       }
-                     
-                    } catch (error) {
-                      console.error("Error updating usage count:", error);
-                      setIsVerified(true);
-                    }
-                  }}
-                />
-              )}
-            </div>
-          ) : (
-            <>
-              {mode === 'research' ? (
-                <iframe
-                  allow="clipboard-read; clipboard-write"
-                  src="https://www.taskade.com/a/01JR7MD4P095GY90F24NF6AFDX"
-                  width="600"
-                  height="400"
-                
-                  allowFullScreen
-                />
-              ) : (
-                <Input
-                  placeholder="Mindmap content"
-                  value={inputValue}
-                  onChange={(e) => setInputValue(e.target.value)}
-                  className="pl-2 pr-2 w-1/2 justify-center mb-6"
-                />
-              )}
-              <Button variant="outline" onClick={handleSubmitWebhook} disabled={loading}>
-                {loading ? <Loader2 className="animate-spin w-4 h-4" /> : "Test Webhook"}
-              </Button>
-              {error? <p className="text-red-600">{error}</p> : null}
-            </>
-          )}
-          {loading && (
-            <div className="justify-center">
-              <p>{loadingMessages[messageIndex]}</p>
-              {currentStep && (
-                <div className="mt-2 text-center">
-                  <p className="text-sm text-gray-600 capitalize">{currentStep}</p>
-                  <div className="w-64 h-2 bg-gray-200 rounded-full mt-2">
+                    }}
+                  />
+                )}
+              </div>
+            ) : (
+              <>
+                {mode === 'research' ? (
+                  <iframe
+                    allow="clipboard-read; clipboard-write"
+                    src="https://www.taskade.com/a/01JR7MD4P095GY90F24NF6AFDX"
+                    width="1200"
+                    height="800"
+
+                    allowFullScreen
+                  />
+                ) : (
+                  <Input
+                    placeholder="Mindmap content"
+                    value={inputValue}
+                    onChange={(e) => setInputValue(e.target.value)}
+                    className="pl-2 pr-2 w-1/2 justify-center mb-6"
+                  />
+                )}
+                <Button variant="outline" onClick={handleSubmitWebhook} disabled={loading}>
+                  {loading ? <Loader2 className="animate-spin w-4 h-4" /> : "Test Webhook"}
+                </Button>
+                {error ? <p className="text-red-600">{error}</p> : null}
+              </>
+            )}
+            {loading && (
+              <div className="justify-center">
+                <p>{loadingMessages[messageIndex]}</p>
+                {currentStep && (
+                  <div className="mt-2 text-center">
+                    <p className="text-sm text-gray-600 capitalize">{currentStep}</p>
+                    <div className="w-64 h-2 bg-gray-200 rounded-full mt-2">
+                    </div>
                   </div>
-                </div>
-              )}
-            </div>
-          )}
-          {inputValue.includes("https://www.youtube.com/") && (
-            <div className="justify-center mt-3">
-              <YouTubeEmbed videoid={inputValue.split("=")[1]} height={8} />
-              <iframe></iframe>
-            </div>
-          )}
-        </div>
+                )}
+              </div>
+            )}
+            {inputValue.includes("https://www.youtube.com/") && (
+              <div className="justify-center mt-3">
+                <YouTubeEmbed videoid={inputValue.split("=")[1]} height={8} />
+                <iframe></iframe>
+              </div>
+            )}
+          </div>
 
-        {/* Middle section: Mindmap Iframe */}
-        <iframe
-          title="HTML Preview"
-          style={{ width: "80%", height: "700px", border: "1px solid #ccc" }} // Kept height for visibility
-          srcDoc={htmlContent}
-          allowFullScreen
-          className="mb-4 mt-4"
-          ref={iframeRef}
-        />
+          {/* Middle section: Mindmap Iframe */}
+          {!(mode == "research") ? (
+            <div id="mindmap" className="w-[80vw] h-700 ml-40px">
+              <iframe
+                title="HTML Preview"
+                style={{ width: "100%", height: "700px", border: "1px solid #ccc" }} // Kept height for visibility
+                srcDoc={htmlContent}
+                allowFullScreen
+                className="mb-4 mt-4"
+                ref={iframeRef}
+              />
 
-        {/* Bottom section: Buttons and Editor */}
-        <div className="w-full flex flex-col items-center">
-          <div className="flex space-x-2 mb-4">
-            <Button variant="outline" onClick={handleSave} disabled={saving}>
-              {saving ? <Loader2 className="animate-spin w-4 h-4" /> : 'Save Changes'}
-            </Button>
-            <Button variant="outline" onClick={enterFullscreen}>Go Fullscreen</Button>
-            <Button variant="outline" onClick={() => {
-              if (editorRef.current) {
-                const currentContent = editorRef.current.state.doc.toString();
-                const fixedContent = currentContent.replace(/\\n/g, '');
-                editorRef.current.dispatch({
-                  changes: { from: 0, to: editorRef.current.state.doc.length, insert: fixedContent }
-                });
-              }
-            }}>Fix Syntax</Button>
+            </div>
+          ) : (null)}
+          {/* Bottom section: Buttons and Editor */}
+          <div className="w-full flex flex-col items-center">
+            <div className="flex space-x-2 mb-4">
+              <Button variant="outline" onClick={handleSave} disabled={saving}>
+                {saving ? <Loader2 className="animate-spin w-4 h-4" /> : 'Save Changes'}
+              </Button>
+              <Button variant="outline" onClick={enterFullscreen}>Go Fullscreen</Button>
+              <Button variant="outline" onClick={() => {
+                if (editorRef.current) {
+                  const currentContent = editorRef.current.state.doc.toString();
+                  const fixedContent = currentContent.replace(/\\n/g, '');
+                  editorRef.current.dispatch({
+                    changes: { from: 0, to: editorRef.current.state.doc.length, insert: fixedContent }
+                  });
+                }
+              }}>Fix Syntax</Button>
+            </div>
+
           </div>
         </div>
       </div>
-    </div>
+      <div className="w-[100vw] mt-60">
+        <div className="w-[100vw]" id="mirror"></div>
+      </div>
+    </>
   );
 }
 

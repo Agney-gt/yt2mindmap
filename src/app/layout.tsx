@@ -1,14 +1,13 @@
 import type React from "react"
 import "@/app/globals.css"
 import { Inter } from "next/font/google"
-import Header from "@/components/header";
-import Footer from "@/components/footer";
 import Providers from "@/components/providers";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import JsonLd from "@/components/json-ld";
 const inter = Inter({ subsets: ["latin"] })
 
 import { Metadata } from "next";
+import ClientLayout from "@/components/client-layout";
 
 export const metadata: Metadata = { 
   metadataBase: new URL("https://yt2mindmap.com"),
@@ -150,11 +149,7 @@ export default function RootLayout({
       )}
       <body className={inter.className}>
         <Providers>
-          <Header />
-          <main className="min-h-[calc(100vh-160px)]">
-            {children}
-          </main>
-          <Footer />
+         <ClientLayout>{children}</ClientLayout>
         </Providers>
       </body>
     </html>
