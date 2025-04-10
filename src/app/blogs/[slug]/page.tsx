@@ -4,8 +4,7 @@ import matter from "gray-matter";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import ReactMarkdown from "react-markdown";
-import Image from "next/image";
-
+import BlogLayout from "@/components/BlogLayout";
 // Define the props type explicitly
 interface JournalPageProps {
   params: Promise<{
@@ -61,21 +60,20 @@ export default async function JournalPage({ params }: JournalPageProps) {
   if (!journal) {
     notFound();
   }
+
+  // Calculate reading time (rough estimate: 200 words per minute)
+  const wordCount = journal.content.split(/\s+/).length;
+  const readingTime = Math.ceil(wordCount / 200);
+
   return (
-    <article className="max-w-4xl mx-auto px-4 py-8">
-      <h1 className="text-4xl font-bold mb-6">{journal.metadata.title}</h1>
-      {journal.metadata.image && (
-        <Image
-          src={journal.metadata.image}
-          alt={journal.metadata.title}
-          width={1200}
-          height={630}
-          className="rounded-lg mb-6"
-        />
-      )}
-      <div className="prose prose-lg">
-  <ReactMarkdown>{journal.content}</ReactMarkdown>
-</div>
-    </article>
+    <BlogLayout
+      title={journal.metadata.title}
+      description={journal.metadata.description}
+      image={journal.metadata.image}
+      date={journal.metadata.date}
+      readingTime={`${readingTime}`}
+    >
+      <ReactMarkdown>{journal.content}</ReactMarkdown>
+    </BlogLayout>
   );
 }
