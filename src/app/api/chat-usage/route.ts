@@ -17,7 +17,7 @@ export async function GET() {
 
     const { data, error } = await supabase
       .from('mindmap_usage')
-      .select('usage_count, isSubscribed')
+      .select('usage_count, isSubscribed, isPaid')
       .eq('user_id', session.user.email)
       .single();
 
@@ -36,7 +36,7 @@ export async function GET() {
       throw error;
     }
 
-    return NextResponse.json({ usage_count: data.usage_count, isSubscribed: data.isSubscribed });
+    return NextResponse.json({ usage_count: data.usage_count, isSubscribed: data.isSubscribed, isPaid: data.isPaid });
   } catch (error) {
     console.error('Error fetching chat usage:', error);
     return NextResponse.json({ error: 'Failed to fetch chat usage' }, { status: 500 });

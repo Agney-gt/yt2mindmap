@@ -290,7 +290,7 @@ export default function Home() {
                         method: "GET",
                       });
                       const data = await response.json();
-                      if (data.usage_count > 3 && !data.isSubscribed) {
+                      if (data.usage_count > 3 && !data.isSubscribed && !data.isPaid) {
                         setShowPricing(true);
                       } else {
                         setIsVerified(true);
