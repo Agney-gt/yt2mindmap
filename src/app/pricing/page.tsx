@@ -96,11 +96,7 @@ export default function PricingPage() {
       answer:
         "Due to the digital nature of our services, all sales are final. Refunds will only be granted in cases of duplicate payments, technical issues preventing service access, or service unavailability. Refund requests must be submitted within 7 days of purchase.",
     },
-    {
-      question: "Is there a long-term contract?",
-      answer:
-        "No, our Pro plan is billed monthly and you can cancel at any time. There are no long-term commitments required.",
-    },
+
   ]
 
   return (

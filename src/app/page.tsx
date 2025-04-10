@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import PricingPage from "./pricing/page";
 
 export default function HomePage() {
   const router = useRouter();
@@ -365,21 +364,6 @@ export default function HomePage() {
               </p>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* Pricing Section */}
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-4">
-          <p className="text-slate-600 text-center max-w-2xl mx-auto mb-16">
-            Choose the plan that best fits your learning journey
-          </p>
-
-         <PricingPage/>
-
-          <p className="text-center text-sm text-slate-500 mt-8">
-            All plans include a 14-day money-back guarantee. No questions asked.
-          </p>
         </div>
       </section>
 
