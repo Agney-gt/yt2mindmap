@@ -138,14 +138,37 @@ export default function Home() {
 
   const handleSubmitWebhook = async () => {
     setLoading(true);
+    setError(null);
     try {
+      // Extract video ID from URL
+      const videoId = inputValue.split('v=')[1]?.split('&')[0];
+      if (!videoId) {
+        setError('Invalid YouTube URL');
+        setLoading(false);
+        return;
+      }
+
+      // Check for subtitles first
+      const subtitleCheckResponse = await fetch('/api/check-subtitles', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ videoId }),
+      });
+
+      const subtitleData = await subtitleCheckResponse.json();
+      if (!subtitleData.hasSubtitles) {
+        setError('This video does not have subtitles available');
+        setLoading(false);
+        return;
+      }
+
       const taskId = Math.random().toString(36).substring(2);
       const response = await fetch('/api/yt-transcript-webhook-old', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ url: inputValue, taskId }),
       });
-      console.log("sent to taskade")
+      
       if (response.ok) {
         // Increment chat usage count
         await fetch('/api/chat-usage', {
@@ -158,13 +181,14 @@ export default function Home() {
           body: JSON.stringify({ taskId, email: session?.user?.email }),
         });
         console.log("Webhook submitted successfully.");
-        await new Promise(resolve => setTimeout(resolve, 25000));
         await checkTaskStatus(taskId);
       } else {
         console.error("Failed to submit webhook:", await response.text());
+        setError('Failed to process video');
       }
     } catch (error) {
       console.error("Error submitting webhook:", error);
+      setError('An error occurred while processing the video');
     } finally {
       setLoading(false);
     }
@@ -201,11 +225,7 @@ export default function Home() {
           fetchHtmlContent(taskId);
           setTaskId(taskId);
           return data.data;
-        } else if(!data.task.isTranscribe){
-          clearInterval(messageInterval);
-          setLoading(false);
-          setError("No subtitles in the provided YouTube link");
-        }
+        } 
         await new Promise(resolve => setTimeout(resolve, interval));
         attempts++;
       } catch (error) {
