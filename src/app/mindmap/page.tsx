@@ -119,8 +119,11 @@ export default function Home() {
     setLoading(true);
     try {
       const response = await fetch(`/api/mindmaps/${id}`);
+      
       if (response.ok) {
+        
         const data = await response.json();
+        
         setHtmlContent(data.htmlContent);
         setInputValue(data.metadata?.youtubeUrl || '');
         if (editorRef.current) {
@@ -310,14 +313,23 @@ export default function Home() {
             ) : (
               <>
                 {mode === 'research' ? (
-                  <iframe
-                    allow="clipboard-read; clipboard-write"
-                    src="https://www.taskade.com/a/01JR7MD4P095GY90F24NF6AFDX"
-                    width="1200"
-                    height="800"
-
-                    allowFullScreen
-                  />
+                  <div className="relative">
+                    <iframe
+                      allow="clipboard-read; clipboard-write"
+                      src="https://www.taskade.com/a/01JR7MD4P095GY90F24NF6AFDX"
+                      width="1200"
+                      height="800"
+                      allowFullScreen
+                      ref={iframeRef}
+                    />
+                    <Button 
+                      variant="outline" 
+                      onClick={enterFullscreen}
+                      className="absolute top-2 right-2"
+                    >
+                      Fullscreen
+                    </Button>
+                  </div>
                 ) : (
                   <Input
                     placeholder="Mindmap content"
@@ -326,9 +338,11 @@ export default function Home() {
                     className="pl-2 pr-2 w-1/2 justify-center mb-6"
                   />
                 )}
-                <Button variant="outline" onClick={handleSubmitWebhook} disabled={loading}>
-                  {loading ? <Loader2 className="animate-spin w-4 h-4" /> : "Test Webhook"}
-                </Button>
+                {!(mode == 'research') && (
+                  <Button variant="default" onClick={handleSubmitWebhook} disabled={loading}>
+                    {loading? <Loader2 className="animate-spin w-4 h-4" /> : 'Generate Mindmap'}
+                  </Button>
+                )}
                 {error ? <p className="text-red-600">{error}</p> : null}
               </>
             )}
@@ -368,21 +382,23 @@ export default function Home() {
           ) : (null)}
           {/* Bottom section: Buttons and Editor */}
           <div className="w-full flex flex-col items-center">
+           {!(mode=='research') && (
             <div className="flex space-x-2 mb-4">
-              <Button variant="outline" onClick={handleSave} disabled={saving}>
-                {saving ? <Loader2 className="animate-spin w-4 h-4" /> : 'Save Changes'}
-              </Button>
-              <Button variant="outline" onClick={enterFullscreen}>Go Fullscreen</Button>
-              <Button variant="outline" onClick={() => {
-                if (editorRef.current) {
-                  const currentContent = editorRef.current.state.doc.toString();
-                  const fixedContent = currentContent.replace(/\\n/g, '');
-                  editorRef.current.dispatch({
-                    changes: { from: 0, to: editorRef.current.state.doc.length, insert: fixedContent }
-                  });
-                }
-              }}>Fix Syntax</Button>
-            </div>
+            <Button variant="outline" onClick={handleSave} disabled={saving}>
+              {saving ? <Loader2 className="animate-spin w-4 h-4" /> : 'Save Changes'}
+            </Button>
+            <Button variant="outline" onClick={enterFullscreen}>Go Fullscreen</Button>
+            <Button variant="outline" onClick={() => {
+              if (editorRef.current) {
+                const currentContent = editorRef.current.state.doc.toString();
+                const fixedContent = currentContent.replace(/\\n/g, '');
+                editorRef.current.dispatch({
+                  changes: { from: 0, to: editorRef.current.state.doc.length, insert: fixedContent }
+                });
+              }
+            }}>Fix Syntax</Button>
+          </div>
+           )}
 
           </div>
         </div>
