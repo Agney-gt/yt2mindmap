@@ -403,7 +403,7 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <div className="w-[100vw] mt-60">
+      <div className="w-[100vw] mt-80">
         <div className="w-[100vw]" id="mirror"></div>
       </div>
     </>
