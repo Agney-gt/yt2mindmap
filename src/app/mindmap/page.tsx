@@ -1,16 +1,16 @@
 "use client";
 import { useEffect, useState, useRef } from "react";
-import { EditorView, basicSetup } from "codemirror";
-import { html } from "@codemirror/lang-html";
+import { MindmapEditor } from "@/components/mirrorEditor";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
+import { EditorView } from "codemirror";
 import { useSession } from "next-auth/react";
 import { YouTubeEmbed } from '@next/third-parties/google';
 import Turnstile from "@/components/Turnstile";
 import PricingPortal from "@/components/PricingPortal";
-import SavedMindmaps from "@/components/SavedMindmaps";
-
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
+import { AppSidebar } from "@/components/app-sidebar"
 export default function Home() {
   const { data: session } = useSession();
   const [isVerified, setIsVerified] = useState(false);
@@ -18,39 +18,17 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const editorRef = useRef<EditorView | null>(null);
-  const [isMounted, setIsMounted] = useState(false);
+  const editorContainerRef = useRef<HTMLDivElement | null>(null);
+  //const [isMounted, setIsMounted] = useState(false);
   const [saving, setSaving] = useState(false);
   const [TaskId, setTaskId] = useState('');
   const [mode, setMode] = useState<'youtube' | 'longtext' | 'research'>('youtube');
   const [showPricing, setShowPricing] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (!isMounted) return;
-    if (!editorRef.current) {
-      editorRef.current = new EditorView({
-        parent: document.getElementById("mirror")!,
-        doc: htmlContent,
-        extensions: [
-          basicSetup,
-          html(),
-          EditorView.updateListener.of((update) => {
-            if (update.docChanged) {
-              const newContent = update.state.doc.toString();
-              setHtmlContent(newContent);
-            }
-          }),
-        ],
-      });
-    }
-    return () => {
-      editorRef.current?.destroy();
-      editorRef.current = null;
-    };
-  }, [isMounted]);
 
   useEffect(() => {
-    setIsMounted(true);
+    //setIsMounted(true);
     const urlParams = typeof window !== "undefined" ? new URLSearchParams(window.location.search) : null;
     const mindmapId = urlParams?.get("id");
     if (mindmapId) {
@@ -251,11 +229,14 @@ export default function Home() {
   return (
     <>
       <div className="flex h-screen">
+      
         <PricingPortal isOpen={showPricing} />
         {session && (
-          <div className="w-70 bg-gray-100 h-[120vh] p-4 border-r border-gray-300 overflow-y-auto">
-            <SavedMindmaps />
-          </div>
+            <SidebarProvider>
+            <AppSidebar />
+            <SidebarTrigger />
+          </SidebarProvider>
+          
         )}
         <div className="flex-1 flex flex-col items-center pb-[80px]"> {/* Added padding-bottom for footer */}
           {/* Top section: Input and Controls */}
@@ -317,7 +298,7 @@ export default function Home() {
                     <iframe
                       allow="clipboard-read; clipboard-write"
                       src="https://www.taskade.com/a/01JR7MD4P095GY90F24NF6AFDX"
-                      width="1200"
+                      width="600"
                       height="800"
                       allowFullScreen
                       ref={iframeRef}
@@ -368,17 +349,8 @@ export default function Home() {
 
           {/* Middle section: Mindmap Iframe */}
           {!(mode == "research") ? (
-            <div id="mindmap" className="w-[80vw] h-700 ml-40px">
-              <iframe
-                title="HTML Preview"
-                style={{ width: "100%", height: "700px", border: "1px solid #ccc" }} // Kept height for visibility
-                srcDoc={htmlContent}
-                allowFullScreen
-                className="mb-4 mt-4"
-                ref={iframeRef}
-              />
-
-            </div>
+            <MindmapEditor editorRef={editorRef} htmlContent={htmlContent} setHtmlContent={setHtmlContent}/>
+        
           ) : (null)}
           {/* Bottom section: Buttons and Editor */}
           <div className="w-full flex flex-col items-center">
@@ -404,7 +376,7 @@ export default function Home() {
         </div>
       </div>
       <div className="w-[100vw] mt-80">
-        <div className="w-[100vw]" id="mirror"></div>
+       <div ref={editorContainerRef} className="editor-container" />
       </div>
     </>
   );
