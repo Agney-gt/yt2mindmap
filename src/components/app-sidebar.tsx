@@ -51,7 +51,7 @@ export function AppSidebar() {
   }
 
   return (
-    <Sidebar>
+    <Sidebar id="left-sidebar" >
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>Saved Mindmaps</SidebarGroupLabel>
@@ -59,7 +59,7 @@ export function AppSidebar() {
             <SidebarMenu>
             
               {!loading && mindmaps.map((item) => (
-                <SidebarMenuItem key={item.title}>
+                <SidebarMenuItem key={item.title} className="my-2">
                   <SidebarMenuButton asChild>
                     <a href={`/mindmap?id=${item.id}`}>
                       <span>{item.title}</span>

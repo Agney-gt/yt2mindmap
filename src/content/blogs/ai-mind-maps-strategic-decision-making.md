@@ -4,13 +4,13 @@ title: "AI Mind Maps for Strategic Decision-Making"
 description: "Discover how AI-generated mind maps assist executives in making data-driven strategic decisions. Learn about scenario planning, risk assessment, and business modeling using AI-enhanced visual tools."
 image: "https://eobemzviqxxlcrwuygkr.supabase.co/storage/v1/object/public/yt2insight//ai-mind-maps-strategic-decision-making.png"
 openGraph:
-title: "AI Mind Maps for Strategic Decision-Making"
-description: "Explore how AI-powered mind mapping tools optimize executive decision-making, risk assessment, and strategic planning."
-images:
-\- url: "https://eobemzviqxxlcrwuygkr.supabase.co/storage/v1/object/public/yt2insight//ai-mind-maps-strategic-decision-making.png"
-width: 1200
-height: 630
-alt: "A visualization of AI-driven strategic mind mapping tools enhancing decision-making."
+    title: "AI Mind Maps for Decision-Making"
+    description: "Explore how AI-powered mind mapping tools optimize executive decision-making, risk assessment, and strategic planning."
+    images:
+     - url: "https://eobemzviqxxlcrwuygkr.supabase.co/storage/v1/object/public/yt2insight//ai-mind-maps-strategic-decision-making.png" 
+       width: 1200
+       height: 630
+       alt: "A dynamic visual of interconnected AI nodes forming a mind map, representing enhanced thinking and automation."
 -------------------------------------------------------------------------------------------
 
 # AI Mind Maps for Strategic Decision-Making: Transforming Executive Leadership Through Visual Intelligence
@@ -157,4 +157,3 @@ Challenges include leadership mindset shifts, data quality demands, security com
 4. [Taskade – Mind Mapping for Decision-Making](https://www.taskade.com/generate/mind-maps/decision-making-mind-map)
 5. [Jeda AI – SWOT Analysis with AI](https://www.jeda.ai/resources/swot-analysis-with-ai)
 6. [LinkedIn – Best Practices for AI Data Visualizations](https://www.linkedin.com/advice/0/what-best-practices-designing-ai-data-visualizations-k9ubf)
-

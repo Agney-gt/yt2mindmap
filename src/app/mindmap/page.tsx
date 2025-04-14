@@ -11,6 +11,9 @@ import Turnstile from "@/components/Turnstile";
 import PricingPortal from "@/components/PricingPortal";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/app-sidebar"
+import { TaskadeSidebar } from "@/components/TaskadeSidebar"
+import {useNextStep } from "nextstepjs"
+
 export default function Home() {
   const { data: session } = useSession();
   const [isVerified, setIsVerified] = useState(false);
@@ -18,24 +21,30 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const editorRef = useRef<EditorView | null>(null);
-  const editorContainerRef = useRef<HTMLDivElement | null>(null);
   //const [isMounted, setIsMounted] = useState(false);
   const [saving, setSaving] = useState(false);
   const [TaskId, setTaskId] = useState('');
-  const [mode, setMode] = useState<'youtube' | 'longtext' | 'research'>('youtube');
+  const [mode, setMode] = useState<'youtube' | 'longtext' >('youtube');
   const [showPricing, setShowPricing] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
 
   useEffect(() => {
-    //setIsMounted(true);
+    const hasSeenTutorial = localStorage.getItem('hasSeenTutorial') === 'true';
+    if (!hasSeenTutorial) {
+      handleStartTour();
+      localStorage.setItem('hasSeenTutorial', 'true');
+    }
     const urlParams = typeof window !== "undefined" ? new URLSearchParams(window.location.search) : null;
     const mindmapId = urlParams?.get("id");
     if (mindmapId) {
       loadSavedMindmap(mindmapId);
     }
   }, []);
-
+   const { startNextStep } = useNextStep();
+   const handleStartTour = () => {
+    startNextStep("mainTour");
+  };
 
 
   const handleSave = async () => {
@@ -176,7 +185,7 @@ export default function Home() {
       setLoading(false);
     }
   };
-  const [currentStep, setCurrentStep] = useState('');
+  const [CurrentStep, setCurrentSteps] = useState('');
   const loadingMessages = [
     'Processing video transcript...',
     'Analyzing content structure...',
@@ -197,7 +206,7 @@ export default function Home() {
       try {
         const res = await fetch(`/api/webhook?taskId=${taskId}`);
         const data = await res.json();
-        setCurrentStep(data.status);
+        setCurrentSteps(data.status);
         console.log(data);
         if (data.task.status == 'complete') {
           clearInterval(messageInterval);
@@ -219,25 +228,24 @@ export default function Home() {
     console.error("Task polling timed out.");
     clearInterval(messageInterval);
   };
-  const iframeRef = useRef<HTMLIFrameElement | null>(null);
   const enterFullscreen = () => {
-    const iframe = iframeRef.current;
+    const iframe = document.getElementById('mindmap') as HTMLIFrameElement;
     if (iframe?.requestFullscreen) {
       iframe.requestFullscreen();
     }
   };
   return (
     <>
-      <div className="flex h-screen">
-      
+
+        <div className="flex h-screen relative">
         <PricingPortal isOpen={showPricing} />
         {session && (
-            <SidebarProvider>
-            <AppSidebar />
+          <SidebarProvider>
+            <AppSidebar/>
             <SidebarTrigger />
           </SidebarProvider>
-          
         )}
+        
         <div className="flex-1 flex flex-col items-center pb-[80px]"> {/* Added padding-bottom for footer */}
           {/* Top section: Input and Controls */}
           <div className="w-full flex flex-col items-center justify-start pt-8 pb-4">
@@ -257,12 +265,6 @@ export default function Home() {
                   onClick={() => setMode('longtext')}
                 >
                   Long Text
-                </Button>
-                <Button
-                  variant={mode === 'research' ? 'default' : 'outline'}
-                  onClick={() => setMode('research')}
-                >
-                  Research
                 </Button>
               </div>
             </div>
@@ -293,46 +295,27 @@ export default function Home() {
               </div>
             ) : (
               <>
-                {mode === 'research' ? (
-                  <div className="relative">
-                    <iframe
-                      allow="clipboard-read; clipboard-write"
-                      src="https://www.taskade.com/a/01JR7MD4P095GY90F24NF6AFDX"
-                      width="600"
-                      height="800"
-                      allowFullScreen
-                      ref={iframeRef}
-                    />
-                    <Button 
-                      variant="outline" 
-                      onClick={enterFullscreen}
-                      className="absolute top-2 right-2"
-                    >
-                      Fullscreen
-                    </Button>
-                  </div>
-                ) : (
                   <Input
+                  id="input"
                     placeholder="Mindmap content"
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}
                     className="pl-2 pr-2 w-1/2 justify-center mb-6"
                   />
-                )}
-                {!(mode == 'research') && (
+              
                   <Button variant="default" onClick={handleSubmitWebhook} disabled={loading}>
                     {loading? <Loader2 className="animate-spin w-4 h-4" /> : 'Generate Mindmap'}
                   </Button>
-                )}
+             
                 {error ? <p className="text-red-600">{error}</p> : null}
               </>
             )}
             {loading && (
               <div className="justify-center">
                 <p>{loadingMessages[messageIndex]}</p>
-                {currentStep && (
+                {CurrentStep && (
                   <div className="mt-2 text-center">
-                    <p className="text-sm text-gray-600 capitalize">{currentStep}</p>
+                    <p className="text-sm text-gray-600 capitalize">{CurrentStep}</p>
                     <div className="w-64 h-2 bg-gray-200 rounded-full mt-2">
                     </div>
                   </div>
@@ -348,14 +331,11 @@ export default function Home() {
           </div>
 
           {/* Middle section: Mindmap Iframe */}
-          {!(mode == "research") ? (
+       
             <MindmapEditor editorRef={editorRef} htmlContent={htmlContent} setHtmlContent={setHtmlContent}/>
-        
-          ) : (null)}
           {/* Bottom section: Buttons and Editor */}
           <div className="w-full flex flex-col items-center">
-           {!(mode=='research') && (
-            <div className="flex space-x-2 mb-4">
+            <div className="flex space-x-2 mb-4 mt-10" id="buttons">
             <Button variant="outline" onClick={handleSave} disabled={saving}>
               {saving ? <Loader2 className="animate-spin w-4 h-4" /> : 'Save Changes'}
             </Button>
@@ -369,15 +349,19 @@ export default function Home() {
                 });
               }
             }}>Fix Syntax</Button>
+            <Button variant="outline" onClick={handleStartTour}>Show tour</Button>
           </div>
-           )}
+
 
           </div>
+          
         </div>
+        <TaskadeSidebar/>
       </div>
-      <div className="w-[100vw] mt-80">
-       <div ref={editorContainerRef} className="editor-container" />
-      </div>
+
+
+     
+      
     </>
   );
 }
