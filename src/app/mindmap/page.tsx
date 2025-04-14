@@ -13,21 +13,23 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/app-sidebar"
 import { TaskadeSidebar } from "@/components/TaskadeSidebar"
 import {useNextStep } from "nextstepjs"
+import { HtmlContentProvider, useHtmlContentContext } from "@/contexts/HTMLContextProvider";
+import { useFetchHtmlContent, useSaveHtmlContent } from "@/hooks/all-hooks";
 
 export default function Home() {
   const { data: session } = useSession();
   const [isVerified, setIsVerified] = useState(false);
-  const [htmlContent, setHtmlContent] = useState("12");
   const [loading, setLoading] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const editorRef = useRef<EditorView | null>(null);
-  //const [isMounted, setIsMounted] = useState(false);
   const [saving, setSaving] = useState(false);
   const [TaskId, setTaskId] = useState('');
   const [mode, setMode] = useState<'youtube' | 'longtext' >('youtube');
   const [showPricing, setShowPricing] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
+  const { htmlContent, setHtmlContent } = useHtmlContentContext();
+  const { fetchHtmlContent } = useFetchHtmlContent(editorRef);
+  const { loadSavedMindmap } = useSaveHtmlContent(editorRef);
 
   useEffect(() => {
     const hasSeenTutorial = localStorage.getItem('hasSeenTutorial') === 'true';
@@ -82,49 +84,6 @@ export default function Home() {
     }
   };
 
-  const fetchHtmlContent = async (taskId: string) => {
-    setLoading(true);
-    try {
-      const userEmail = session?.user?.email || 'anonymous';
-      const response = await fetch(`https://yt2mapapi.blob.core.windows.net/html/user-${userEmail.split('@')[0]}/${taskId}.html`, { cache: 'no-store' });
-      const text = await response.text();
-
-      setHtmlContent(text);
-      if (editorRef.current) {
-        editorRef.current.dispatch({
-          changes: { from: 0, to: editorRef.current.state.doc.length, insert: text },
-        });
-      }
-    } catch (error) {
-      console.error('Error fetching HTML content:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const loadSavedMindmap = async (id: string) => {
-    setLoading(true);
-    try {
-      const response = await fetch(`/api/mindmaps/${id}`);
-      
-      if (response.ok) {
-        
-        const data = await response.json();
-        
-        setHtmlContent(data.htmlContent);
-        setInputValue(data.metadata?.youtubeUrl || '');
-        if (editorRef.current) {
-          editorRef.current.dispatch({
-            changes: { from: 0, to: editorRef.current.state.doc.length, insert: data.htmlContent },
-          });
-        }
-      }
-    } catch (error) {
-      console.error('Error loading mindmap:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleSubmitWebhook = async () => {
     setLoading(true);
@@ -331,8 +290,10 @@ export default function Home() {
           </div>
 
           {/* Middle section: Mindmap Iframe */}
-       
+          <HtmlContentProvider>
             <MindmapEditor editorRef={editorRef} htmlContent={htmlContent} setHtmlContent={setHtmlContent}/>
+          </HtmlContentProvider>
+            
           {/* Bottom section: Buttons and Editor */}
           <div className="w-full flex flex-col items-center">
             <div className="flex space-x-2 mb-4 mt-10" id="buttons">
