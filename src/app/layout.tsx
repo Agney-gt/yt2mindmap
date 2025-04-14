@@ -5,7 +5,6 @@ import Providers from "@/components/providers";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import JsonLd from "@/components/json-ld";
 const inter = Inter({ subsets: ["latin"] })
-
 import { Metadata } from "next";
 import ClientLayout from "@/components/client-layout";
 
@@ -149,7 +148,13 @@ export default function RootLayout({
       )}
       <body className={inter.className}>
         <Providers>
-         <ClientLayout>{children}</ClientLayout>
+      
+       
+        <ClientLayout>
+         {children}
+        </ClientLayout>
+  
+       
         </Providers>
       </body>
     </html>

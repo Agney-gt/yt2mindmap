@@ -45,6 +45,7 @@ export function MindmapEditor({ editorRef, htmlContent, setHtmlContent }: Mindma
       />
       <iframe
         title="HTML Preview"
+        id="view"
         ref={iframeRef}
         className="w-3/4 h-full border border-gray-300 mb-4 mt-4"
         srcDoc={htmlContent}

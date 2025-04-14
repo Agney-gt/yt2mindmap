@@ -1,17 +1,16 @@
 ---
-
 title: "AI-Powered Visual Storytelling for Presentations"
 description: "Understand how professionals use AI-generated mind maps to craft compelling visual presentations. Learn how AI-driven storytelling improves audience engagement, clarity, and persuasion in business settings."
 image: "https://eobemzviqxxlcrwuygkr.supabase.co/storage/v1/object/public/yt2insight//ai-visual-storytelling.png"
 openGraph:
-title: "AI-Powered Visual Storytelling for Presentations"
-description: "Discover how AI-generated mind maps and storytelling tools enhance audience engagement, improve clarity, and drive persuasive business presentations."
-images:
-\- url: "https://eobemzviqxxlcrwuygkr.supabase.co/storage/v1/object/public/yt2insight//ai-visual-storytelling.png"
-width: 1200
-height: 630
-alt: "An AI-enhanced visualization of storytelling tools transforming business presentations."
-----------------------------------------------------------------------------------------------
+  title: "AI-Powered Visual Storytelling for Presentations"
+  description: "Discover how AI-generated mind maps and storytelling tools enhance audience engagement, improve clarity, and drive persuasive business presentations."
+  images:
+    - url: "https://eobemzviqxxlcrwuygkr.supabase.co/storage/v1/object/public/yt2insight//ai-visual-storytelling.png"
+      width: 1200
+      height: 630
+      alt: "An AI-enhanced visualization of storytelling tools transforming business presentations."
+---
 
 # AI-Powered Visual Storytelling for Presentations
 
