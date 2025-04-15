@@ -23,7 +23,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
     const containerName = 'html';
     const containerClient = blobServiceClient.getContainerClient(containerName);
     const userEmail = session.user.email.toLowerCase();
-
+    console.log(containerClient)
     // Update metadata
     const metadataBlobName = `user-${userEmail.split("@")[0]}/${id}.json`;
     const metadataBlobClient = containerClient.getBlockBlobClient(metadataBlobName);
@@ -98,6 +98,53 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
     console.error('Error fetching mindmap:', error);
     return NextResponse.json(
       { error: 'Failed to fetch mindmap' },
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE(request: Request, { params }: { params: Promise<{ id: string }> }) {
+  try {
+    const session = await getServerSession();
+    if (!session?.user?.email) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const resolvedParams = await params; // Await the Promise to get { id: string }
+    const id = resolvedParams.id;
+    
+    if (!id) {
+      return NextResponse.json({ error: 'Mindmap ID is required' }, { status: 400 });
+    }
+
+    const containerName = 'html';
+    const containerClient = blobServiceClient.getContainerClient(containerName);
+    const userEmail = session.user.email.toLowerCase();
+    const userPrefix = `user-${userEmail.split("@")[0]}`;
+
+    // Define blob names
+    const metadataBlobName = `${userPrefix}/${id}.json`;
+    const htmlBlobName = `${userPrefix}/${id}.html`;
+
+    // Delete metadata blob
+    const metadataBlobClient = containerClient.getBlockBlobClient(metadataBlobName);
+    const metadataDeleteResult = await metadataBlobClient.deleteIfExists({ deleteSnapshots: 'include' });
+
+    // Delete HTML blob
+    const htmlBlobClient = containerClient.getBlockBlobClient(htmlBlobName);
+    const htmlDeleteResult = await htmlBlobClient.deleteIfExists({ deleteSnapshots: 'include' });
+
+    const deleted = metadataDeleteResult.succeeded || htmlDeleteResult.succeeded;
+
+    if (!deleted) {
+      return NextResponse.json({ error: 'Mindmap not found' }, { status: 404 });
+    }
+
+    return NextResponse.json({ message: 'Mindmap deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting mindmap:', error);
+    return NextResponse.json(
+      { error: 'Failed to delete mindmap' },
       { status: 500 }
     );
   }

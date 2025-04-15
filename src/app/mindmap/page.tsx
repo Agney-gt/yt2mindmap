@@ -15,6 +15,7 @@ import { TaskadeSidebar } from "@/components/TaskadeSidebar"
 import {useNextStep } from "nextstepjs"
 import { HtmlContentProvider, useHtmlContentContext } from "@/contexts/HTMLContextProvider";
 import { useFetchHtmlContent, useSaveHtmlContent } from "@/hooks/all-hooks";
+import { useSearchParams } from 'next/navigation';
 
 export default function Home() {
   const { data: session } = useSession();
@@ -30,19 +31,20 @@ export default function Home() {
   const { htmlContent, setHtmlContent } = useHtmlContentContext();
   const { fetchHtmlContent } = useFetchHtmlContent(editorRef);
   const { loadSavedMindmap } = useSaveHtmlContent(editorRef);
-
+  const searchParams = useSearchParams();
+  const mindmapId = searchParams.get("id");
   useEffect(() => {
     const hasSeenTutorial = localStorage.getItem('hasSeenTutorial') === 'true';
     if (!hasSeenTutorial) {
       handleStartTour();
       localStorage.setItem('hasSeenTutorial', 'true');
     }
-    const urlParams = typeof window !== "undefined" ? new URLSearchParams(window.location.search) : null;
-    const mindmapId = urlParams?.get("id");
+    //const urlParams = typeof window !== "undefined" ? new URLSearchParams(window.location.search) : null;
+    //const mindmapId = urlParams?.get("id");
     if (mindmapId) {
       loadSavedMindmap(mindmapId);
     }
-  }, []);
+  }, [mindmapId]);
    const { startNextStep } = useNextStep();
    const handleStartTour = () => {
     startNextStep("mainTour");
@@ -159,7 +161,7 @@ export default function Home() {
     let attempts = 0;
     const messageInterval = setInterval(() => {
       setMessageIndex(prev => (prev + 1) % loadingMessages.length);
-    }, 10000);
+    }, 15000);
 
     while (attempts < maxRetries) {
       try {

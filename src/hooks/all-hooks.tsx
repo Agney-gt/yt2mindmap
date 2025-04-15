@@ -1,12 +1,16 @@
 import { useHtmlContentContext } from "@/contexts/HTMLContextProvider";
 import { EditorView } from "codemirror";
+import { useSession } from "next-auth/react";
 
 export function useFetchHtmlContent(editorRef: React.RefObject<EditorView | null>) {
   const { setHtmlContent } = useHtmlContentContext();
+  const { data:session } = useSession();
 
   const fetchHtmlContent = async (taskId: string) => {
+    //setLoading(true);
     try {
-      const response = await fetch(`/api/html/${taskId}`);
+      const userEmail = session?.user?.email || 'anonymous';
+      const response = await fetch(`https://yt2mapapi.blob.core.windows.net/html/user-${userEmail.split('@')[0]}/${taskId}.html`, { cache: 'no-store' });
       const text = await response.text();
 
       setHtmlContent(text);
@@ -16,7 +20,9 @@ export function useFetchHtmlContent(editorRef: React.RefObject<EditorView | null
         });
       }
     } catch (error) {
-      console.error("Error fetching HTML content:", error);
+      console.error('Error fetching HTML content:', error);
+    } finally {
+      //setLoading(false);
     }
   };
 
