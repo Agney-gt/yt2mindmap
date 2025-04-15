@@ -41,7 +41,7 @@ export function MindmapEditor({ editorRef, htmlContent, setHtmlContent }: Mindma
     <div id="mindmap" className="w-[80vw] h-[700px] ml-[40px] flex gap-4">
       <div
         ref={editorContainerRef}
-        className="editor-container w-1/4 h-full border border-gray-300 rounded-md p-2 bg-gray-50 overflow-auto"
+        className="editor-container w-1/2 h-full border border-gray-300 rounded-md p-2 bg-gray-50 overflow-auto mt-4"
       />
       <iframe
         title="HTML Preview"
