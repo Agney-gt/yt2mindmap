@@ -2,7 +2,7 @@
 import { useState, useRef, useEffect } from "react";
 import { EditorView, basicSetup } from "codemirror";
 import { html } from "@codemirror/lang-html";
-import { HtmlContentProvider } from "@/contexts/HTMLContextProvider";
+
 
 
 export function MindmapEditor({ htmlContents }: { htmlContents: string }) {
@@ -55,7 +55,7 @@ export function MindmapEditor({ htmlContents }: { htmlContents: string }) {
   }, [htmlContents]);
 
   return (
-    <HtmlContentProvider>
+    
       <div id="mindmap" className="w-[80vw] h-[700px] ml-[40px] flex gap-4">
         <div
           ref={editorContainerRef}
@@ -70,6 +70,6 @@ export function MindmapEditor({ htmlContents }: { htmlContents: string }) {
           allowFullScreen
         />
       </div>
-    </HtmlContentProvider>
+    
   );
 }
