@@ -7,9 +7,9 @@ import { Input } from '@/components/ui/input'; // adjust this import based on yo
 import { Loader2 } from 'lucide-react'; // adjust this import based on your project structure
 import { Session } from 'next-auth'; // Ensure this import matches your project setup
 import { EditorView } from '@codemirror/view'; // Ensure this import matches your project setup
-import { HtmlContentProvider, useHtmlContentContext } from "@/contexts/HTMLContextProvider";
+// import { HtmlContentProvider, useHtmlContentContext } from "@/contexts/HTMLContextProvider";
 import PricingPortal from "@/components/PricingPortal";
-import { MindmapEditor } from "@/components/mirrorEditor";
+//import { MindmapEditor } from "@/components/mirrorEditor";
 import { useSearchParams } from 'next/navigation';
 import { useFetchHtmlContent, useSaveHtmlContent } from "@/hooks/all-hooks";
 interface ModeSelectorProps {
@@ -27,9 +27,9 @@ const ModeSelector = ({ session }: ModeSelectorProps) => {
   const editorRef = useRef<EditorView | null>(null);
   const { loadSavedMindmap } = useSaveHtmlContent(editorRef);
   const { fetchHtmlContent } = useFetchHtmlContent(editorRef);
-  const [TaskId, setTaskId] = useState('');
-  const { htmlContent, setHtmlContent } = useHtmlContentContext();
-  const [saving, setSaving] = useState(false);
+  // const [TaskId, setTaskId] = useState('');
+  // const { htmlContent, setHtmlContent } = useHtmlContentContext();
+  //const [saving, setSaving] = useState(false);
   const searchParams = useSearchParams();
   const mindmapId = searchParams.get("id");
   useEffect(() => {
@@ -38,40 +38,40 @@ const ModeSelector = ({ session }: ModeSelectorProps) => {
       loadSavedMindmap(mindmapId);
     }
   }, [mindmapId]);
-  const handleSave = async () => {
-    if (!session?.user?.email) {
-      console.error('User not authenticated');
-      return;
-    }
-    setSaving(true);
-    try {
-      const currentHtml = editorRef.current?.state.doc.toString() || htmlContent;
-      const urlParams = new URLSearchParams(window.location.search);
-      const mindmapId = urlParams.get('id');
-      const endpoint = mindmapId ? `/api/mindmaps/${mindmapId}` : `/api/mindmaps/${TaskId}`;
-      const method = mindmapId ? 'PUT' : 'POST';
-      const response = await fetch(endpoint, {
-        method,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          title: `Mindmap - ${new Date().toLocaleString()}`,
-          youtubeUrl: inputValue,
-          htmlContent: currentHtml,
-        }),
-      });
-      if (response.ok) {
-        console.log('Mindmap saved:', await response.json());
-      } else {
-        console.error('Failed to save mindmap');
-      }
-    } catch (error) {
-      console.error('Error saving mindmap:', error);
-    } finally {
-      setSaving(false);
-    }
-  };
+  // const handleSave = async () => {
+  //   if (!session?.user?.email) {
+  //     console.error('User not authenticated');
+  //     return;
+  //   }
+  //   setSaving(true);
+  //   try {
+  //     const currentHtml = editorRef.current?.state.doc.toString() || htmlContent;
+  //     const urlParams = new URLSearchParams(window.location.search);
+  //     const mindmapId = urlParams.get('id');
+  //     const endpoint = mindmapId ? `/api/mindmaps/${mindmapId}` : `/api/mindmaps/${TaskId}`;
+  //     const method = mindmapId ? 'PUT' : 'POST';
+  //     const response = await fetch(endpoint, {
+  //       method,
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({
+  //         title: `Mindmap - ${new Date().toLocaleString()}`,
+  //         youtubeUrl: inputValue,
+  //         htmlContent: currentHtml,
+  //       }),
+  //     });
+  //     if (response.ok) {
+  //       console.log('Mindmap saved:', await response.json());
+  //     } else {
+  //       console.error('Failed to save mindmap');
+  //     }
+  //   } catch (error) {
+  //     console.error('Error saving mindmap:', error);
+  //   } finally {
+  //     setSaving(false);
+  //   }
+  // };
   const handleSubmitWebhook = async () => {
     setLoading(true);
     setError(null);
@@ -161,7 +161,7 @@ const ModeSelector = ({ session }: ModeSelectorProps) => {
           console.log("Task completed");
           await new Promise(resolve => setTimeout(resolve, 2000));
           fetchHtmlContent(taskId);
-          setTaskId(taskId);
+          //setTaskId(taskId);
           return data.data;
         }
         await new Promise(resolve => setTimeout(resolve, interval));
@@ -174,12 +174,12 @@ const ModeSelector = ({ session }: ModeSelectorProps) => {
     console.error("Task polling timed out.");
     clearInterval(messageInterval);
   };
-  const enterFullscreen = () => {
-    const iframe = document.getElementById('mindmap') as HTMLIFrameElement;
-    if (iframe?.requestFullscreen) {
-      iframe.requestFullscreen();
-    }
-  };
+  // const enterFullscreen = () => {
+  //   const iframe = document.getElementById('mindmap') as HTMLIFrameElement;
+  //   if (iframe?.requestFullscreen) {
+  //     iframe.requestFullscreen();
+  //   }
+  // };
   return (
     
       <div className="flex justify-center gap-2 mb-6">
@@ -263,13 +263,13 @@ const ModeSelector = ({ session }: ModeSelectorProps) => {
               </div>
             )}
             
-            <div className="flex">
+            {/* <div className="flex">
             <HtmlContentProvider>
-            <MindmapEditor editorRef={editorRef} htmlContent={htmlContent} setHtmlContent={setHtmlContent}/>
+            <MindmapEditor htmlContent={htmlContent} setHtmlContent={setHtmlContent}/>
             </HtmlContentProvider>
-            </div>
+            </div> */}
             
-            <div className="flex space-x-2 mb-4 mt-10" id="buttons">
+            {/* <div className="flex space-x-2 mb-4 mt-10" id="buttons">
             <Button variant="outline" onClick={handleSave} disabled={saving}>
               {saving ? <Loader2 className="animate-spin w-4 h-4" /> : 'Save Changes'}
             </Button>
@@ -283,8 +283,8 @@ const ModeSelector = ({ session }: ModeSelectorProps) => {
                 });
               }
             }}>Fix Syntax</Button>
-            {/* <Button variant="outline" onClick={handleStartTour}>Show tour</Button> */}
-          </div>
+            { <Button variant="outline" onClick={handleStartTour}>Show tour</Button> }
+          </div> */}
           </div>
 
       </div>

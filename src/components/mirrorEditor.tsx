@@ -1,18 +1,18 @@
-import { useRef, useEffect } from "react";
+"use client";
+import { useState, useRef, useEffect } from "react";
 import { EditorView, basicSetup } from "codemirror";
 import { html } from "@codemirror/lang-html";
+import { HtmlContentProvider } from "@/contexts/HTMLContextProvider";
 
-interface MindmapEditorProps {
-  editorRef: React.RefObject<EditorView | null>
-  htmlContent: string;
-  setHtmlContent: (content: string) => void;
-}
 
-export function MindmapEditor({ editorRef, htmlContent, setHtmlContent }: MindmapEditorProps) {
-  
+export function MindmapEditor({ htmlContents }: { htmlContents: string }) {
+  const editorRef = useRef<EditorView | null>(null);
   const editorContainerRef = useRef<HTMLDivElement | null>(null);
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
+  const [htmlContent, setHtmlContent] = useState(htmlContents);
 
+
+  // 1️⃣ Create editor once on mount
   useEffect(() => {
     if (!editorContainerRef.current || editorRef.current) return;
 
@@ -35,22 +35,41 @@ export function MindmapEditor({ editorRef, htmlContent, setHtmlContent }: Mindma
       editorRef.current?.destroy();
       editorRef.current = null;
     };
-  }, []);
+  }, []); // 👈 empty dependency array = run only once on mount
+
+  // 2️⃣ Update editor + iframe when htmlContents changes (e.g. from DB/API)
+  useEffect(() => {
+    setHtmlContent(htmlContents);
+    if (editorRef.current) {
+      editorRef.current.dispatch({
+        changes: {
+          from: 0,
+          to: editorRef.current.state.doc.length,
+          insert: htmlContents,
+        },
+      });
+    }
+    if (iframeRef.current) {
+      iframeRef.current.srcdoc = htmlContents;
+    }
+  }, [htmlContents]);
 
   return (
-    <div id="mindmap" className="w-[80vw] h-[700px] ml-[40px] flex gap-4">
-      <div
-        ref={editorContainerRef}
-        className="editor-container w-1/2 h-full border border-gray-300 rounded-md p-2 bg-gray-50 overflow-auto mt-4"
-      />
-      <iframe
-        title="HTML Preview"
-        id="view"
-        ref={iframeRef}
-        className="w-3/4 h-full border border-gray-300 mb-4 mt-4"
-        srcDoc={htmlContent}
-        allowFullScreen
-      />
-    </div>
+    <HtmlContentProvider>
+      <div id="mindmap" className="w-[80vw] h-[700px] ml-[40px] flex gap-4">
+        <div
+          ref={editorContainerRef}
+          className="editor-container w-1/2 h-full border border-gray-300 rounded-md p-2 bg-gray-50 overflow-auto mt-4"
+        />
+        <iframe
+          title="HTML Preview"
+          id="view"
+          ref={iframeRef}
+          className="w-3/4 h-full border border-gray-300 mb-4 mt-4"
+          srcDoc={htmlContent}
+          allowFullScreen
+        />
+      </div>
+    </HtmlContentProvider>
   );
 }

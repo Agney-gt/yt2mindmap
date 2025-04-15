@@ -1,5 +1,5 @@
 import { BlobServiceClient } from '@azure/storage-blob';
-
+import { getServerSession } from 'next-auth';
 const connectionString = process.env.AZURE_STORAGE_CONNECTION_STRING || '';
 const blobServiceClient = BlobServiceClient.fromConnectionString(connectionString);
 // lib/getMindmaps.ts
@@ -44,4 +44,28 @@ export async function getUserMindmaps(email: string) {
       }
     }
     return Buffer.concat(chunks).toString('utf-8');
+  }
+
+  export async function getMindmapById(id: string) {
+    const session = await getServerSession();
+    if (!session?.user?.email) throw new Error('Unauthorized');
+  
+    const userEmail = session.user.email.toLowerCase();
+    const containerName = 'html';
+    const containerClient = blobServiceClient.getContainerClient(containerName);
+  
+    const prefix = `user-${userEmail.split('@')[0]}/${id}`;
+    const metadataBlobClient = containerClient.getBlockBlobClient(`${prefix}.json`);
+    const htmlBlobClient = containerClient.getBlockBlobClient(`${prefix}.html`);
+  
+    const metadataResponse = await metadataBlobClient.download();
+    const metadataContent = await streamToString(metadataResponse.readableStreamBody || null);
+  
+    const htmlResponse = await htmlBlobClient.download();
+    const htmlContent = await streamToString(htmlResponse.readableStreamBody || null);
+  
+    return {
+      metadata: JSON.parse(metadataContent),
+      htmlContent,
+    };
   }

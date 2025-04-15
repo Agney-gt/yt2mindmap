@@ -7,9 +7,16 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { getUserMindmaps } from '@/lib/getMindmaps';
 import ModeSelector from "@/components/ModeSelector";
 import { TaskadeSidebar } from "@/components/TaskadeSidebar";
-export default async function MindmapPage() {
+import { MindmapEditor } from "@/components/mirrorEditor";
+import { getMindmapById } from "@/lib/getMindmaps";
+export default async function MindmapPage({ searchParams }: { searchParams: { id?: string } }) {
   const session = await getServerSession(authOptions);
-  
+  const mindmapId = searchParams.id;
+  let htmlContent = "";
+  if (mindmapId) {
+    const result = await getMindmapById(mindmapId as string);
+    htmlContent = result.htmlContent;
+  }
   if (!session?.user?.email) {
     redirect("/api/auth/signin"); // Redirect to login
   }
@@ -30,6 +37,13 @@ export default async function MindmapPage() {
                 Youtube to <span className="text-purple-200">MindMap</span>
             </h1>
             <ModeSelector session={session} />
+           
+            <div className="flex">
+            
+            <MindmapEditor htmlContents={htmlContent}/>
+            
+            </div>
+           
             </div>
             <TaskadeSidebar/>
     </div>
