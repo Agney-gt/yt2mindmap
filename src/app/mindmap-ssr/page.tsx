@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import { AppSidebar } from "@/components/app-sidebar-ssr"; // Adjust path if needed
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { getUserMindmaps } from '@/lib/getMindmaps';
-import ModeSelector from "@/components/ModeSelector";
+
 import { TaskadeSidebar } from "@/components/TaskadeSidebar";
 import { MindmapEditor } from "@/components/mirrorEditor";
 import { getMindmapById } from "@/lib/getMindmaps";
@@ -36,11 +36,11 @@ export default async function MindmapPage({ searchParams }: { searchParams: { id
             <h1 className="flex justify-center text-3xl font-bold items-center tracking-tighter sm:text-4xl md:text-5xl mb-6">
                 Youtube to <span className="text-purple-200">MindMap</span>
             </h1>
-            <ModeSelector session={session} />
+            
            
             <div className="flex">
             
-            <MindmapEditor htmlContents={htmlContent}/>
+            <MindmapEditor session={session} htmlContents={htmlContent}/>
             
             </div>
            

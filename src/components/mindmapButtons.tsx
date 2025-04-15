@@ -1,21 +1,21 @@
 'use client';
 
-import { useState, useRef } from 'react'; // adjust this import based on your project structure
+import { useState } from 'react'; // adjust this import based on your project structure
 import { Session } from 'next-auth'; // Ensure this import matches your project setup
 import { EditorView } from '@codemirror/view'; // Ensure this import matches your project setup
 import { Button } from '@/components/ui/button'; // Adjust this import based on your project structure
 import { Loader2 } from 'lucide-react'; // Ensure this import matches your project setup
 
 interface mindmapButtonsProps {
-
+  editorRef: React.RefObject<EditorView | null>;
   session: Session;
   taskId: string;
 
 }
-const  MindmapButtons = ({ session, taskId }: mindmapButtonsProps) => {
+const  MindmapButtons = ({ editorRef, session, taskId }: mindmapButtonsProps) => {
   //const [inputValue, setInputValue] = useState('');
 
-  const editorRef = useRef<EditorView | null>(null);
+  //const editorRef = useRef<EditorView | null>(null);
   //const [TaskId, setTaskId] = useState('');
 
   const [saving, setSaving] = useState(false);
@@ -71,7 +71,9 @@ const  MindmapButtons = ({ session, taskId }: mindmapButtonsProps) => {
             </Button>
             <Button variant="outline" onClick={enterFullscreen}>Go Fullscreen</Button>
             <Button variant="outline" onClick={() => {
+              console.log(editorRef)
               if (editorRef.current) {
+                console.log("here")
                 const currentContent = editorRef.current.state.doc.toString();
                 const fixedContent = currentContent.replace(/\\n/g, '');
                 editorRef.current.dispatch({

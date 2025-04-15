@@ -1,6 +1,6 @@
 'use client';
 import { YouTubeEmbed } from '@next/third-parties/google';
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button'; // adjust this import based on your project structure
 import Turnstile from './Turnstile';
 import { Input } from '@/components/ui/input'; // adjust this import based on your project structure
@@ -10,24 +10,27 @@ import { EditorView } from '@codemirror/view'; // Ensure this import matches you
 // import { HtmlContentProvider, useHtmlContentContext } from "@/contexts/HTMLContextProvider";
 import PricingPortal from "@/components/PricingPortal";
 //import { MindmapEditor } from "@/components/mirrorEditor";
+import { useRouter } from 'next/navigation';
 
 import { useFetchHtmlContent } from "@/hooks/all-hooks";
+
 import MindmapButtons from './mindmapButtons';
 interface ModeSelectorProps {
-
+  editorRef: React.RefObject<EditorView | null>;
   session: Session;
 
 }
-const ModeSelector = ({ session }: ModeSelectorProps) => {
+const ModeSelector = ({ editorRef, session }: ModeSelectorProps) => {
   const [mode, setMode] = useState<'youtube' | 'longtext'>('youtube');
   const [isVerified, setIsVerified] = useState(false);
   const [showPricing, setShowPricing] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const editorRef = useRef<EditorView | null>(null);
   const { fetchHtmlContent } = useFetchHtmlContent(editorRef);
+  
   const [taskId, setTaskId] = useState('');
+  const router = useRouter();
   // const { htmlContent, setHtmlContent } = useHtmlContentContext();
   //const [saving, setSaving] = useState(false);
   // const searchParams = useSearchParams();
@@ -35,10 +38,10 @@ const ModeSelector = ({ session }: ModeSelectorProps) => {
   
   // useEffect(() => {
    
-  //   if (mindmapId) {
-  //     loadSavedMindmap(mindmapId);
+  //   if (taskId) {
+  //     loadSavedMindmap(taskId);
   //   }
-  // }, [mindmapId]);
+  // }, [taskId]);
   // const handleSave = async () => {
   //   if (!session?.user?.email) {
   //     console.error('User not authenticated');
@@ -142,7 +145,7 @@ const ModeSelector = ({ session }: ModeSelectorProps) => {
     'Finalizing mindmap...'
   ];
   const [messageIndex, setMessageIndex] = useState(0);
-
+  
   const checkTaskStatus = async (taskId: string, maxRetries = 20, interval = 5000) => {
     let attempts = 0;
     const messageInterval = setInterval(() => {
@@ -163,6 +166,7 @@ const ModeSelector = ({ session }: ModeSelectorProps) => {
           await new Promise(resolve => setTimeout(resolve, 2000));
           fetchHtmlContent(taskId);
           setTaskId(taskId);
+          router.push(`/mindmap-ssr?id=${taskId}`);
           return data.data;
         }
         await new Promise(resolve => setTimeout(resolve, interval));
@@ -263,7 +267,7 @@ const ModeSelector = ({ session }: ModeSelectorProps) => {
                 <iframe></iframe>
               </div>
             )}
-            <MindmapButtons taskId={taskId} session={session} />
+            <MindmapButtons editorRef={editorRef} taskId={taskId} session={session} />
             
           </div>
 

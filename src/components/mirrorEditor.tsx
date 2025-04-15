@@ -2,10 +2,11 @@
 import { useState, useRef, useEffect } from "react";
 import { EditorView, basicSetup } from "codemirror";
 import { html } from "@codemirror/lang-html";
+import ModeSelector from "@/components/ModeSelector";
+import { Session } from "next-auth";
 
 
-
-export function MindmapEditor({ htmlContents }: { htmlContents: string }) {
+export function MindmapEditor({ session, htmlContents }: { session: Session, htmlContents: string }) {
   const editorRef = useRef<EditorView | null>(null);
   const editorContainerRef = useRef<HTMLDivElement | null>(null);
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
@@ -56,6 +57,8 @@ export function MindmapEditor({ htmlContents }: { htmlContents: string }) {
 
   return (
     
+    <div className="flex flex-col">
+      <ModeSelector editorRef={editorRef} session={session} />
       <div id="mindmap" className="w-[80vw] h-[700px] ml-[40px] flex gap-4">
         <div
           ref={editorContainerRef}
@@ -69,7 +72,7 @@ export function MindmapEditor({ htmlContents }: { htmlContents: string }) {
           srcDoc={htmlContent}
           allowFullScreen
         />
-      </div>
+      </div></div>
     
   );
 }
