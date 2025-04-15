@@ -1,6 +1,6 @@
 'use client';
 import { YouTubeEmbed } from '@next/third-parties/google';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import { Button } from '@/components/ui/button'; // adjust this import based on your project structure
 import Turnstile from './Turnstile';
 import { Input } from '@/components/ui/input'; // adjust this import based on your project structure
@@ -10,8 +10,9 @@ import { EditorView } from '@codemirror/view'; // Ensure this import matches you
 // import { HtmlContentProvider, useHtmlContentContext } from "@/contexts/HTMLContextProvider";
 import PricingPortal from "@/components/PricingPortal";
 //import { MindmapEditor } from "@/components/mirrorEditor";
-import { useSearchParams } from 'next/navigation';
-import { useFetchHtmlContent, useSaveHtmlContent } from "@/hooks/all-hooks";
+
+import { useFetchHtmlContent } from "@/hooks/all-hooks";
+import MindmapButtons from './mindmapButtons';
 interface ModeSelectorProps {
 
   session: Session;
@@ -25,19 +26,19 @@ const ModeSelector = ({ session }: ModeSelectorProps) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const editorRef = useRef<EditorView | null>(null);
-  const { loadSavedMindmap } = useSaveHtmlContent(editorRef);
   const { fetchHtmlContent } = useFetchHtmlContent(editorRef);
-  // const [TaskId, setTaskId] = useState('');
+  const [taskId, setTaskId] = useState('');
   // const { htmlContent, setHtmlContent } = useHtmlContentContext();
   //const [saving, setSaving] = useState(false);
-  const searchParams = useSearchParams();
-  const mindmapId = searchParams.get("id");
-  useEffect(() => {
+  // const searchParams = useSearchParams();
+  // const mindmapId = searchParams.get("id");
+  
+  // useEffect(() => {
    
-    if (mindmapId) {
-      loadSavedMindmap(mindmapId);
-    }
-  }, [mindmapId]);
+  //   if (mindmapId) {
+  //     loadSavedMindmap(mindmapId);
+  //   }
+  // }, [mindmapId]);
   // const handleSave = async () => {
   //   if (!session?.user?.email) {
   //     console.error('User not authenticated');
@@ -161,7 +162,7 @@ const ModeSelector = ({ session }: ModeSelectorProps) => {
           console.log("Task completed");
           await new Promise(resolve => setTimeout(resolve, 2000));
           fetchHtmlContent(taskId);
-          //setTaskId(taskId);
+          setTaskId(taskId);
           return data.data;
         }
         await new Promise(resolve => setTimeout(resolve, interval));
@@ -262,29 +263,8 @@ const ModeSelector = ({ session }: ModeSelectorProps) => {
                 <iframe></iframe>
               </div>
             )}
+            <MindmapButtons taskId={taskId} session={session} />
             
-            {/* <div className="flex">
-            <HtmlContentProvider>
-            <MindmapEditor htmlContent={htmlContent} setHtmlContent={setHtmlContent}/>
-            </HtmlContentProvider>
-            </div> */}
-            
-            {/* <div className="flex space-x-2 mb-4 mt-10" id="buttons">
-            <Button variant="outline" onClick={handleSave} disabled={saving}>
-              {saving ? <Loader2 className="animate-spin w-4 h-4" /> : 'Save Changes'}
-            </Button>
-            <Button variant="outline" onClick={enterFullscreen}>Go Fullscreen</Button>
-            <Button variant="outline" onClick={() => {
-              if (editorRef.current) {
-                const currentContent = editorRef.current.state.doc.toString();
-                const fixedContent = currentContent.replace(/\\n/g, '');
-                editorRef.current.dispatch({
-                  changes: { from: 0, to: editorRef.current.state.doc.length, insert: fixedContent }
-                });
-              }
-            }}>Fix Syntax</Button>
-            { <Button variant="outline" onClick={handleStartTour}>Show tour</Button> }
-          </div> */}
           </div>
 
       </div>
