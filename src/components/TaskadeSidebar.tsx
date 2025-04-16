@@ -5,7 +5,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 export function TaskadeSidebar() {
     const iframeRef = useRef<HTMLIFrameElement | null>(null);
-    const [isOpen, setIsOpen] = useState(true);
+    const [isOpen, setIsOpen] = useState(false);
 
     return (
         <>
