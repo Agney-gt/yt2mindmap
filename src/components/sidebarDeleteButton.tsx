@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from 'react';
-
+import { X } from 'lucide-react';
 interface DeleteButtonProps {
   mindmapId: string;
 }
@@ -51,9 +51,9 @@ const DeleteButton: React.FC<DeleteButtonProps> = ({ mindmapId }) => {
     <button
       onClick={handleDelete}
       disabled={isDeleting}
-      className="ml-4 text-red-500 hover:text-red-700"
+      className="ml-4 text-red-500 hover:text-red-700 text-right"
     >
-      {isDeleting ? 'Deleting...' : 'Delete'}
+      {isDeleting ? 'Deleting...' : <X className="w-4 h-4" />}
     </button>
   );
 };
