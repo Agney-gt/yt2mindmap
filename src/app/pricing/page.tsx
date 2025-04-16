@@ -1,10 +1,31 @@
 "use client"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { CheckCircle } from "lucide-react"
+import { Checkbox } from "@/components/ui/checkbox"
+import { useState } from "react"
+import { Label } from "@/components/ui/label"
 export default function PricingPage() {
+  const [tosAccepted, setTosAccepted] = useState(false);
 
-  
+  const handleTosCheck = async (checked: boolean) => {
+    setTosAccepted(checked);
+    if (checked) {
+      try {
+        const response = await fetch('/api/tos-check', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        if (!response.ok) {
+          console.error('Failed to update TOS status');
+        }
+      } catch (error) {
+        console.error('Error updating TOS status:', error);
+      }
+    }
+  };
 
   return (
            <section id="pricing" className="w-full py-12 md:py-24 lg:py-32">
@@ -88,7 +109,28 @@ export default function PricingPage() {
                       <span>Access insights anytime</span>
                     </li>
                   </ul>
-                  <Button className="mt-6 w-full" onClick={() => window.location.href = "https://payhip.com/order?link=KSaXZ"}>Start Pro</Button>
+                  <div className="flex items-start space-x-2 mt-4">
+                    <Checkbox
+                      id="refund-policy"
+                      checked={tosAccepted}
+                      onCheckedChange={handleTosCheck}
+                    />
+                    <div className="grid gap-1.5 leading-none">
+                      <Label
+                        htmlFor="refund-policy"
+                        className="text-sm text-muted-foreground"
+                      >
+                        By checking this box, you acknowledge and agree to our Refund Policy: Due to the digital nature of our products, all sales are final. Refunds will only be granted in the case of duplicate payments or technical issues that prevent access, and only within 7 days of purchase.
+                      </Label>
+                    </div>
+                  </div>
+                  <Button
+                    className="mt-6 w-full"
+                    onClick={() => window.location.href = "https://payhip.com/order?link=KSaXZ"}
+                    disabled={!tosAccepted}
+                  >
+                    Start Pro
+                  </Button>
                   <p className="mt-2 text-xs text-center text-muted-foreground">30-day money-back guarantee</p>
                 </CardContent>
                 

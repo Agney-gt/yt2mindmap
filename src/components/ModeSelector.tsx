@@ -11,7 +11,6 @@ import { EditorView } from '@codemirror/view'; // Ensure this import matches you
 import PricingPortal from "@/components/PricingPortal";
 //import { MindmapEditor } from "@/components/mirrorEditor";
 import { useRouter } from 'next/navigation';
-import { useNextStep } from 'nextstepjs';
 
 import { useFetchHtmlContent } from "@/hooks/all-hooks";
 
@@ -22,12 +21,6 @@ interface ModeSelectorProps {
 
 }
 const ModeSelector = ({ editorRef, session }: ModeSelectorProps) => {
-  const { startNextStep } = useNextStep();
-  const handleStartTour = () => {
-    startNextStep("mainTour");
-  };
-
-
 
   const [mode, setMode] = useState<'youtube' | 'longtext'>('youtube');
   const [isVerified, setIsVerified] = useState(false);
@@ -215,13 +208,6 @@ const ModeSelector = ({ editorRef, session }: ModeSelectorProps) => {
           className='m-1'
         >
           Long Text
-        </Button>
-        <Button
-          variant={mode === 'longtext' ? 'default' : 'outline'}
-          onClick={handleStartTour}
-          className='m-1'
-        >
-          Start Tour
         </Button>
         
         {!isVerified ? (
