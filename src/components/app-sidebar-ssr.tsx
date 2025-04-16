@@ -37,7 +37,9 @@ import {
                     <SidebarMenuButton asChild>
                       <div className="flex justify-between items-center w-full">
                         <Link href={`/mindmap-ssr?id=${item.id}`} className="flex flex-col flex-grow">
-                          <span>{item.title}</span>
+                        <span className="truncate max-w-[75%] whitespace-nowrap overflow-hidden text-ellipsis">
+                          {item.title}
+                        </span>
                           <span className="text-xs">{new Date(item.createdAt).toLocaleDateString()}</span>
                         </Link>
                         <DeleteButton mindmapId={item.id}/>

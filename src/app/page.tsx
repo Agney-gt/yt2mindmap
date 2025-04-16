@@ -39,7 +39,7 @@ export default function Home() {
               <div className="mx-auto flex items-center justify-center lg:justify-end">
                 <div className="relative h-[350px] w-full max-w-[550px] overflow-hidden rounded-lg border bg-background shadow-xl">
                   <Image
-                    src="/placeholder.svg?height=700&width=1200"
+                    src="/78b7dcba-a8b6-4a11-b2ab-c8ad24cc0bc3.jpg"
                     width={1200}
                     height={700}
                     alt="MindMapAI in action - converting a YouTube video into an interactive mind map"
@@ -161,7 +161,7 @@ export default function Home() {
               <div className="mx-auto flex items-center justify-center">
                 <div className="relative h-[350px] w-full max-w-[550px] overflow-hidden rounded-lg border bg-background shadow-xl">
                   <Image
-                    src="/placeholder.svg?height=700&width=1200"
+                    src="/KujMUX01.svg"
                     width={1200}
                     height={700}
                     alt="How MindMapAI transforms YouTube videos into interactive mind maps"
@@ -303,7 +303,7 @@ export default function Home() {
                   <div className="mx-auto flex items-center justify-center">
                     <div className="relative h-[300px] w-full max-w-[400px] overflow-hidden rounded-lg border bg-background shadow-xl">
                       <Image
-                        src="/placeholder.svg?height=600&width=800"
+                        src="/vL9h6Y01.svg"
                         width={800}
                         height={600}
                         alt="AI extracting key points from a YouTube video"
@@ -350,7 +350,7 @@ export default function Home() {
                   <div className="mx-auto flex items-center justify-center">
                     <div className="relative h-[300px] w-full max-w-[400px] overflow-hidden rounded-lg border bg-background shadow-xl">
                       <Image
-                        src="/placeholder.svg?height=600&width=800"
+                        src="/Tt90z601.svg"
                         width={800}
                         height={600}
                         alt="Visual organization of concepts in a mind map"
@@ -398,7 +398,7 @@ export default function Home() {
                   <div className="mx-auto flex items-center justify-center">
                     <div className="relative h-[300px] w-full max-w-[400px] overflow-hidden rounded-lg border bg-background shadow-xl">
                       <Image
-                        src="/placeholder.svg?height=600&width=800"
+                        src="/HpnGZd01.svg"
                         width={800}
                         height={600}
                         alt="Knowledge retention tools and flashcards"
