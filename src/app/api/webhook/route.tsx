@@ -110,3 +110,46 @@ export async function POST(request: Request): Promise<NextResponse> {
     );
   }
 }
+
+export async function GET(request: Request): Promise<NextResponse> {
+  try {
+    const { searchParams } = new URL(request.url);
+    const taskId = searchParams.get("taskId");
+
+    if (!taskId) {
+      return NextResponse.json(
+        { success: false, message: "Task ID is required" },
+        { status: 400 }
+      );
+    }
+
+    // Get task status from Redis
+    const taskData = await redis.get(`task:${taskId}`);
+
+    if (!taskData) {
+      return NextResponse.json(
+        { success: false, message: "Task not found" },
+        { status: 404 }
+      );
+    }
+
+    try {
+      const parsedData = typeof taskData === 'string' ? JSON.parse(taskData) : taskData;
+      return NextResponse.json({
+        success: true,
+        task: parsedData,
+      });
+    } catch (error) {
+      return NextResponse.json(
+        { success: false, message: error },
+        { status: 500 }
+      );
+    }
+  } catch (error) {
+    console.error("Error fetching task status:", error);
+    return NextResponse.json(
+      { success: false, message: "Failed to fetch task status" },
+      { status: 500 }
+    );
+  }
+}
