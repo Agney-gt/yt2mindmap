@@ -32,51 +32,6 @@ const ModeSelector = ({ editorRef, session }: ModeSelectorProps) => {
   
   const [taskId, setTaskId] = useState('');
   const router = useRouter();
-  // const { htmlContent, setHtmlContent } = useHtmlContentContext();
-  //const [saving, setSaving] = useState(false);
-  // const searchParams = useSearchParams();
-  // const mindmapId = searchParams.get("id");
-  
-  // useEffect(() => {
-   
-  //   if (taskId) {
-  //     loadSavedMindmap(taskId);
-  //   }
-  // }, [taskId]);
-  // const handleSave = async () => {
-  //   if (!session?.user?.email) {
-  //     console.error('User not authenticated');
-  //     return;
-  //   }
-  //   setSaving(true);
-  //   try {
-  //     const currentHtml = editorRef.current?.state.doc.toString() || htmlContent;
-  //     const urlParams = new URLSearchParams(window.location.search);
-  //     const mindmapId = urlParams.get('id');
-  //     const endpoint = mindmapId ? `/api/mindmaps/${mindmapId}` : `/api/mindmaps/${TaskId}`;
-  //     const method = mindmapId ? 'PUT' : 'POST';
-  //     const response = await fetch(endpoint, {
-  //       method,
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify({
-  //         title: `Mindmap - ${new Date().toLocaleString()}`,
-  //         youtubeUrl: inputValue,
-  //         htmlContent: currentHtml,
-  //       }),
-  //     });
-  //     if (response.ok) {
-  //       console.log('Mindmap saved:', await response.json());
-  //     } else {
-  //       console.error('Failed to save mindmap');
-  //     }
-  //   } catch (error) {
-  //     console.error('Error saving mindmap:', error);
-  //   } finally {
-  //     setSaving(false);
-  //   }
-  // };
   const handleSubmitWebhook = async () => {
     setLoading(true);
     setError(null);
@@ -180,20 +135,15 @@ const ModeSelector = ({ editorRef, session }: ModeSelectorProps) => {
     console.error("Task polling timed out.");
     clearInterval(messageInterval);
   };
-  // const enterFullscreen = () => {
-  //   const iframe = document.getElementById('mindmap') as HTMLIFrameElement;
-  //   if (iframe?.requestFullscreen) {
-  //     iframe.requestFullscreen();
-  //   }
-  // };
+  
   return (
     
-      <div className="flex justify-center gap-2 mb-6">
+      <div className="flex flex-col justify-center gap-2 mb-6">
       
         <PricingPortal isOpen={showPricing} />
         
-     
-        <div className="flex flex-col justify-center items-center">
+        
+        <div className="justify-center items-center">
           
         <Button
           variant={mode === 'youtube' ? 'default' : 'outline'}
@@ -238,13 +188,15 @@ const ModeSelector = ({ editorRef, session }: ModeSelectorProps) => {
               </div>
             ) : (
               <>
-                  <Input
-                  id="input"
-                    placeholder="Mindmap content"
-                    value={inputValue}
-                    onChange={(e) => setInputValue(e.target.value)}
-                    className="pl-2 pr-2 w-1/2 justify-center mb-6"
-                  />
+                  <div className="flex flex-col items-center justify-center">
+                    <Input
+                      id="input"
+                      placeholder="Mindmap content"
+                      value={inputValue}
+                      onChange={(e) => setInputValue(e.target.value)}
+                      className="mt-2 pl-2 pr-2 w-1/2 mb-6"
+                    />
+                  </div>
               
                   <Button variant="default" onClick={handleSubmitWebhook} disabled={loading}>
                     {loading? <Loader2 className="animate-spin w-4 h-4" /> : 'Generate Mindmap'}

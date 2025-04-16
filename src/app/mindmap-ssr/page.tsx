@@ -5,7 +5,6 @@ import { redirect } from "next/navigation";
 import { AppSidebar } from "@/components/app-sidebar-ssr"; // Adjust path if needed
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { getUserMindmaps } from '@/lib/getMindmaps';
-
 import { TaskadeSidebar } from "@/components/TaskadeSidebar";
 import { MindmapEditor } from "@/components/mirrorEditor";
 import { getMindmapById } from "@/lib/getMindmaps";

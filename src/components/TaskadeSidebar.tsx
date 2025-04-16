@@ -13,7 +13,7 @@ export function TaskadeSidebar() {
             {/* Toggle Button */}
             {isOpen && <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="absolute -left-10 bg-white p-2 rounded-l-md border border-r-0 border-gray-200 shadow-md hover:bg-gray-50 transition-colors pointer-events-auto"
+                className="relative -left-10 top-[10vh] bg-white p-2 rounded-l-md border border-r-0 border-gray-200 shadow-md hover:bg-gray-50 transition-colors pointer-events-auto"
             >
                 {isOpen ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
             </button>}
@@ -37,7 +37,7 @@ export function TaskadeSidebar() {
         </div>
         {!isOpen && (
              <button 
-               className="absolute right-0 top-[37vh] bg-white p-2 rounded-l-md border border-r-0 border-gray-200 shadow-md hover:bg-gray-50 transition-colors pointer-events-auto"
+               className="relative -right-0 top-[10vh] bg-white p-2 rounded-l-md border border-r-0 border-gray-200 shadow-md hover:bg-gray-50 transition-colors pointer-events-auto"
              onClick={() => setIsOpen(!isOpen)}
            >
              <ChevronLeft className="w-4 h-4" />

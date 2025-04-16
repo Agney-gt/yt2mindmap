@@ -37,15 +37,15 @@ export default function Home() {
                 </div>
               </div>
               <div className="mx-auto flex items-center justify-center lg:justify-end">
-                <div className="relative h-[350px] w-full max-w-[550px] overflow-hidden rounded-lg border bg-background shadow-xl">
-                  <Image
-                    src="/78b7dcba-a8b6-4a11-b2ab-c8ad24cc0bc3.jpg"
-                    width={1200}
-                    height={700}
-                    alt="MindMapAI in action - converting a YouTube video into an interactive mind map"
-                    className="object-cover"
-                    priority
-                  />
+              <div className="relative w-full max-w-[800px] aspect-[1574/832] overflow-hidden rounded-lg border bg-background shadow-xl">
+                <Image
+                  src="/78b7dcba-a8b6-4a11-b2ab-c8ad24cc0bc3.jpg"
+                  width={1574}
+                  height={832}
+                  alt="MindMapAI in action - converting a YouTube video into an interactive mind map"
+                  className="object-cover w-full h-full"
+                  priority
+                />
                   <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent"></div>
                   <div className="absolute bottom-4 left-4 right-4 rounded-lg bg-background/90 p-4 backdrop-blur">
                     <p className="text-sm font-medium">
@@ -161,11 +161,11 @@ export default function Home() {
               <div className="mx-auto flex items-center justify-center">
                 <div className="relative h-[350px] w-full max-w-[550px] overflow-hidden rounded-lg border bg-background shadow-xl">
                   <Image
-                    src="/KujMUX01.svg"
+                    src="/pie-chart-80-svgrepo-com.svg"
                     width={1200}
                     height={700}
                     alt="How MindMapAI transforms YouTube videos into interactive mind maps"
-                    className="object-cover"
+                    className="object-contain mt-12 ml-32"
                   />
                 </div>
               </div>
@@ -262,7 +262,7 @@ export default function Home() {
               <TabsList className="grid w-full grid-cols-3">
                 <TabsTrigger value="extract">Extract</TabsTrigger>
                 <TabsTrigger value="organize">Organize</TabsTrigger>
-                <TabsTrigger value="retain">Retain</TabsTrigger>
+                <TabsTrigger value="retain">Enrich</TabsTrigger>
               </TabsList>
               <TabsContent value="extract" className="mt-6">
                 <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12">
@@ -274,8 +274,7 @@ export default function Home() {
                         <div>
                           <p className="font-medium">Instant Key Point Detection</p>
                           <p className="text-sm text-muted-foreground">
-                            Our AI identifies and extracts the most important concepts from any YouTube video in
-                            seconds.
+                            Our AI identifies and extracts the most important concepts, facts and practical tips from long text and YouTube videos.
                           </p>
                         </div>
                       </li>
@@ -284,7 +283,7 @@ export default function Home() {
                         <div>
                           <p className="font-medium">AI Assistant</p>
                           <p className="text-sm text-muted-foreground">
-                            Browse the web, skip the algorthm and get youtube video links!
+                            Get Quotes, summaries and insights from any video or text. 
                           </p>
                         </div>
                       </li>
@@ -303,11 +302,11 @@ export default function Home() {
                   <div className="mx-auto flex items-center justify-center">
                     <div className="relative h-[300px] w-full max-w-[400px] overflow-hidden rounded-lg border bg-background shadow-xl">
                       <Image
-                        src="/vL9h6Y01.svg"
+                        src="/magnifying-glass-for-search-svgrepo-com.svg"
                         width={800}
                         height={600}
                         alt="AI extracting key points from a YouTube video"
-                        className="object-cover"
+                        className="object-contain ml-24 mt-10"
                       />
                     </div>
                   </div>
@@ -316,14 +315,14 @@ export default function Home() {
               <TabsContent value="organize" className="mt-6">
                 <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12">
                   <div className="flex flex-col justify-center space-y-4">
-                    <h3 className="text-2xl font-bold">Visual Knowledge Organization</h3>
+                    <h3 className="text-2xl font-bold">AI Assistant</h3>
                     <ul className="space-y-2">
                       <li className="flex items-start gap-2">
                         <CheckCircle className="h-5 w-5 text-primary mt-0.5" />
                         <div>
-                          <p className="font-medium">Intelligent Concept Mapping</p>
+                          <p className="font-medium">Search the web, find youtube video links and more!</p>
                           <p className="text-sm text-muted-foreground">
-                            Our AI automatically organizes extracted concepts into a coherent mind map structure with quotes and practical insights, not just summary boxes.
+                            Skip the algorithm altogether and get the most relevant content for your research.
                           </p>
                         </div>
                       </li>
@@ -341,7 +340,7 @@ export default function Home() {
                         <div>
                           <p className="font-medium">Minimize doomscrolling</p>
                           <p className="text-sm text-muted-foreground">
-                            Watching yet another video, I decided to focus on the underlying message instead of just the flashy visuals.
+                            Focus on the underlying message instead of just the flashy visuals.
                           </p>
                         </div>
                       </li>
@@ -350,11 +349,11 @@ export default function Home() {
                   <div className="mx-auto flex items-center justify-center">
                     <div className="relative h-[300px] w-full max-w-[400px] overflow-hidden rounded-lg border bg-background shadow-xl">
                       <Image
-                        src="/Tt90z601.svg"
+                        src="/chatbot-svgrepo-com.svg"
                         width={800}
                         height={600}
                         alt="Visual organization of concepts in a mind map"
-                        className="object-cover"
+                        className="object-contain ml-28 mt-14"
                       />
                     </div>
                   </div>
@@ -377,10 +376,9 @@ export default function Home() {
                       <li className="flex items-start gap-2">
                         <CheckCircle className="h-5 w-5 text-primary mt-0.5" />
                         <div>
-                          <p className="font-medium">Knowledge Connection</p>
+                          <p className="font-medium">Reflection</p>
                           <p className="text-sm text-muted-foreground">
-                            Our AI suggests connections between concepts across different mind maps to build a
-                            comprehensive knowledge network.
+                            Quickly access previous mind maps to reinforce visual learning.
                           </p>
                         </div>
                       </li>
@@ -398,11 +396,11 @@ export default function Home() {
                   <div className="mx-auto flex items-center justify-center">
                     <div className="relative h-[300px] w-full max-w-[400px] overflow-hidden rounded-lg border bg-background shadow-xl">
                       <Image
-                        src="/HpnGZd01.svg"
+                        src="/clock-svgrepo-com.svg"
                         width={800}
                         height={600}
                         alt="Knowledge retention tools and flashcards"
-                        className="object-cover"
+                        className="object-contain ml-24 mt-10"
                       />
                     </div>
                   </div>
@@ -428,22 +426,22 @@ export default function Home() {
                 </div>
                 <div className="flex items-center gap-4 pt-4">
                   <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary">
-                    <span className="text-lg font-bold text-primary-foreground">JD</span>
+                    <span className="text-lg font-bold text-primary-foreground">AG</span>
                   </div>
                   <div>
                     <p className="font-medium">Agney Nalapat</p>
-                    <p className="text-sm text-muted-foreground">Founder & CEO</p>
+                    <p className="text-sm text-muted-foreground">Founder</p>
                   </div>
                 </div>
               </div>
               <div className="mx-auto flex items-center justify-center">
                 <div className="relative h-[350px] w-full max-w-[400px] overflow-hidden rounded-lg border bg-background shadow-xl">
                   <Image
-                    src="/placeholder.svg?height=700&width=800"
+                    src="/zen-svgrepo-com(2).svg"
                     width={800}
                     height={700}
                     alt="MindMapAI founder working on the platform"
-                    className="object-cover"
+                    className="object-contain mt-8 ml-16"
                   />
                 </div>
               </div>

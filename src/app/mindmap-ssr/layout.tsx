@@ -1,6 +1,4 @@
 
-import Header from "@/components/header";
-
 export default function MindmapLayout({
   children,
 }: {
@@ -8,7 +6,7 @@ export default function MindmapLayout({
 }) {
   return (
     <>
-      <Header />
+      
       {children}
     </>
   );
