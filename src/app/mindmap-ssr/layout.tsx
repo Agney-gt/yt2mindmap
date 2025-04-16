@@ -1,9 +1,6 @@
-// components/client-layout.tsx
-"use client"
-import { NextStep, NextStepProvider, Tour} from "nextstepjs"
-import { usePathname } from "next/navigation"
-import Header from "@/components/header"
-import Footer from "@/components/footer"
+
+import Header from "@/components/header";
+import { NextStep, NextStepProvider, Tour} from "nextstepjs";
 const steps : Tour[] = [
   {
     tour: "mainTour",
@@ -73,19 +70,119 @@ const steps : Tour[] = [
     ]
   }
 ];
-export default function ClientLayout({ children }: { children: React.ReactNode }) {
-  const pathname = usePathname()
-  const showFooter = pathname !== "/mindmap"
-
+export default function MindmapLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <>
-      <NextStepProvider>
-        <NextStep steps={steps}>
-        <Header />
-      <main className="min-h-[calc(100vh-160px)]">{children}</main>
-      {showFooter && <Footer />}
-        </NextStep>
-      </NextStepProvider>
-    </>
-  )
+   <>
+    <NextStepProvider>
+    <NextStep steps={steps}>
+    <Header/>
+    {children}
+    </NextStep>
+    </NextStepProvider>
+   </>
+     
+  );
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

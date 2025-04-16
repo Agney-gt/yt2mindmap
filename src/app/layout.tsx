@@ -6,7 +6,6 @@ import { GoogleAnalytics } from "@next/third-parties/google";
 import JsonLd from "@/components/json-ld";
 const inter = Inter({ subsets: ["latin"] })
 import { Metadata } from "next";
-import ClientLayout from "@/components/client-layout";
 import { HtmlContentProvider } from "@/contexts/HTMLContextProvider";
 export const metadata: Metadata = { 
   metadataBase: new URL("https://yt2mindmap.com"),
@@ -149,15 +148,9 @@ export default function RootLayout({
       <body className={inter.className}>
         
         <Providers>
-      
-       
-        <ClientLayout>
         <HtmlContentProvider>
          {children}
          </HtmlContentProvider>
-        </ClientLayout>
-  
-       
         </Providers>
         
       </body>
