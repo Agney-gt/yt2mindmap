@@ -1,6 +1,6 @@
 'use client';
 import { YouTubeEmbed } from '@next/third-parties/google';
-import { useState } from 'react';
+import {  useState } from 'react';
 import { Button } from '@/components/ui/button'; // adjust this import based on your project structure
 import Turnstile from './Turnstile';
 import { Input } from '@/components/ui/input'; // adjust this import based on your project structure
@@ -11,6 +11,7 @@ import { EditorView } from '@codemirror/view'; // Ensure this import matches you
 import PricingPortal from "@/components/PricingPortal";
 //import { MindmapEditor } from "@/components/mirrorEditor";
 import { useRouter } from 'next/navigation';
+import { useNextStep } from 'nextstepjs';
 
 import { useFetchHtmlContent } from "@/hooks/all-hooks";
 
@@ -21,6 +22,13 @@ interface ModeSelectorProps {
 
 }
 const ModeSelector = ({ editorRef, session }: ModeSelectorProps) => {
+  const { startNextStep } = useNextStep();
+  const handleStartTour = () => {
+    startNextStep("mainTour");
+  };
+
+
+
   const [mode, setMode] = useState<'youtube' | 'longtext'>('youtube');
   const [isVerified, setIsVerified] = useState(false);
   const [showPricing, setShowPricing] = useState(false);
@@ -197,15 +205,25 @@ const ModeSelector = ({ editorRef, session }: ModeSelectorProps) => {
         <Button
           variant={mode === 'youtube' ? 'default' : 'outline'}
           onClick={() => setMode('youtube')}
+          className='m-1'
         >
           YouTube
         </Button>
         <Button
           variant={mode === 'longtext' ? 'default' : 'outline'}
           onClick={() => setMode('longtext')}
+          className='m-1'
         >
           Long Text
         </Button>
+        <Button
+          variant={mode === 'longtext' ? 'default' : 'outline'}
+          onClick={handleStartTour}
+          className='m-1'
+        >
+          Start Tour
+        </Button>
+        
         {!isVerified ? (
           
               <div className="flex flex-col items-center">
